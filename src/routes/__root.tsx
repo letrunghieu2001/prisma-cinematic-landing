@@ -79,10 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Xưởng Số — Xưởng tạo bài học & học liệu số bằng AI" },
-      { name: "description", content: "Chọn template theo tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học và học liệu số của riêng bạn." },
+      {
+        name: "description",
+        content:
+          "Chọn template theo tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học và học liệu số của riêng bạn.",
+      },
       { name: "author", content: "Xưởng Số" },
       { property: "og:title", content: "Xưởng Số — Xưởng tạo bài học & học liệu số bằng AI" },
-      { property: "og:description", content: "Nền tảng chia sẻ prompt tạo bài học HTML và 9 loại học liệu số, thuộc hệ sinh thái Trường học số." },
+      {
+        property: "og:description",
+        content:
+          "Nền tảng chia sẻ prompt tạo bài học HTML và 9 loại học liệu số, thuộc hệ sinh thái Trường học số.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

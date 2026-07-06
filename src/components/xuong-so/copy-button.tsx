@@ -22,7 +22,6 @@ function legacyCopy(text: string): void {
   document.body.appendChild(textarea);
   textarea.select();
   try {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const ok = document.execCommand("copy");
     if (!ok) throw new Error("execCommand copy failed");
   } finally {
@@ -30,7 +29,12 @@ function legacyCopy(text: string): void {
   }
 }
 
-export function CopyButton({ text, label = "Copy prompt", size = "sm", className = "" }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  label = "Copy prompt",
+  size = "sm",
+  className = "",
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   function markCopied() {
@@ -54,8 +58,7 @@ export function CopyButton({ text, label = "Copy prompt", size = "sm", className
     }
   }
 
-  const sizeClasses =
-    size === "lg" ? "px-6 py-3 text-base min-h-[44px]" : "px-4 py-2 text-sm";
+  const sizeClasses = size === "lg" ? "px-6 py-3 text-base min-h-[44px]" : "px-4 py-2 text-sm";
   const Icon = copied ? Check : Copy;
 
   return (

@@ -81,9 +81,9 @@ export function Hero() {
                 style={{ color: "rgba(222, 219, 200, 0.75)", lineHeight: 1.35 }}
               >
                 Xưởng tạo <em className="font-serif italic">bài học</em> &amp;{" "}
-                <em className="font-serif italic">học liệu</em> số bằng AI. Chọn template theo
-                tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài
-                học của riêng bạn.
+                <em className="font-serif italic">học liệu</em> số bằng AI. Chọn template theo tiến
+                trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học của
+                riêng bạn.
               </motion.p>
               <motion.button
                 type="button"

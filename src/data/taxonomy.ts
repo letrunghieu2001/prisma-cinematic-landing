@@ -74,12 +74,7 @@ export const STAGE_INFO: Record<StoryboardStage, StageInfo> = {
   },
 };
 
-export const STAGE_ORDER: StoryboardStage[] = [
-  "khoi-dong",
-  "hinh-thanh",
-  "luyen-tap",
-  "van-dung",
-];
+export const STAGE_ORDER: StoryboardStage[] = ["khoi-dong", "hinh-thanh", "luyen-tap", "van-dung"];
 
 export const SUBJECTS: string[] = [
   "Toán",

@@ -54,18 +54,16 @@ describe("filterPrompts", () => {
   });
 
   it("kết hợp stage + tool (AND)", () => {
-    expect(
-      filterPrompts(items, { ...EMPTY_FILTER, stage: "luyen-tap", tool: "lovable" }),
-    ).toEqual([items[1]]);
-    expect(
-      filterPrompts(items, { ...EMPTY_FILTER, stage: "luyen-tap", tool: "claude" }),
-    ).toEqual([]);
+    expect(filterPrompts(items, { ...EMPTY_FILTER, stage: "luyen-tap", tool: "lovable" })).toEqual([
+      items[1],
+    ]);
+    expect(filterPrompts(items, { ...EMPTY_FILTER, stage: "luyen-tap", tool: "claude" })).toEqual(
+      [],
+    );
   });
 
   it("lọc subject và grade", () => {
-    expect(filterPrompts(items, { ...EMPTY_FILTER, subject: "Tiếng Anh" })).toEqual([
-      items[1],
-    ]);
+    expect(filterPrompts(items, { ...EMPTY_FILTER, subject: "Tiếng Anh" })).toEqual([items[1]]);
     expect(filterPrompts(items, { ...EMPTY_FILTER, grade: "Lớp 7" })).toHaveLength(2);
   });
 

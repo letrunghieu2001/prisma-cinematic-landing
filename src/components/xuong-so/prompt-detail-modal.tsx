@@ -108,12 +108,18 @@ function ModalBody({ item, onClose }: { item: PromptItem; onClose: () => void })
 
         <div className="mb-2 flex flex-wrap items-center gap-2">
           {typeInfo && (
-            <span className="rounded-full px-3 py-1 text-xs font-semibold text-black" style={{ backgroundColor: typeInfo.color }}>
+            <span
+              className="rounded-full px-3 py-1 text-xs font-semibold text-black"
+              style={{ backgroundColor: typeInfo.color }}
+            >
               {typeInfo.label}
             </span>
           )}
           {stageInfo && (
-            <span className="rounded-full px-3 py-1 text-xs font-semibold text-black" style={{ backgroundColor: stageInfo.color }}>
+            <span
+              className="rounded-full px-3 py-1 text-xs font-semibold text-black"
+              style={{ backgroundColor: stageInfo.color }}
+            >
               {stageInfo.label}
             </span>
           )}
@@ -173,6 +179,8 @@ function ModalBody({ item, onClose }: { item: PromptItem; onClose: () => void })
 
 export function PromptDetailModal({ item, onClose }: PromptDetailModalProps) {
   return (
-    <AnimatePresence>{item && <ModalBody key={item.id} item={item} onClose={onClose} />}</AnimatePresence>
+    <AnimatePresence>
+      {item && <ModalBody key={item.id} item={item} onClose={onClose} />}
+    </AnimatePresence>
   );
 }

@@ -109,7 +109,10 @@ export function MaterialGallery({ items, filter, onFilterChange, onOpen }: Mater
             <select
               value={filter.stage ?? ""}
               onChange={(e) =>
-                onFilterChange({ ...filter, stage: (e.target.value || null) as StoryboardStage | null })
+                onFilterChange({
+                  ...filter,
+                  stage: (e.target.value || null) as StoryboardStage | null,
+                })
               }
               aria-label="Lọc theo giai đoạn bài dạy"
               className={SELECT_CLASSES}

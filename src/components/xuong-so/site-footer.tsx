@@ -12,7 +12,10 @@ export function SiteFooter() {
     <footer className="border-t border-[#212121] bg-black px-4 py-12 sm:px-6 md:px-10">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="relative inline-block text-4xl font-medium tracking-tight" style={{ color: CREAM }}>
+          <p
+            className="relative inline-block text-4xl font-medium tracking-tight"
+            style={{ color: CREAM }}
+          >
             Xưởng Số
             <span className="absolute top-0 -right-3 text-sm">*</span>
           </p>

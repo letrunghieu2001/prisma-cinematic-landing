@@ -22,11 +22,7 @@ export const EMPTY_FILTER: PromptFilter = {
 
 /** Thường hóa + bỏ dấu tiếng Việt để tìm kiếm không phân biệt dấu */
 export function normalizeVi(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replaceAll("đ", "d");
+  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replaceAll("đ", "d");
 }
 
 function matchesQuery(item: PromptItem, q: string): boolean {

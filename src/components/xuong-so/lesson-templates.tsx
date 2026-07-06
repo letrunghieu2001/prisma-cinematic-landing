@@ -13,7 +13,12 @@ interface LessonTemplatesProps {
   onClearStage: () => void;
 }
 
-export function LessonTemplates({ items, activeStage, onOpen, onClearStage }: LessonTemplatesProps) {
+export function LessonTemplates({
+  items,
+  activeStage,
+  onOpen,
+  onClearStage,
+}: LessonTemplatesProps) {
   return (
     <section id="bai-hoc" className="relative bg-black px-4 py-16 sm:px-6 sm:py-24 md:px-10">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.12]" />
