@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quiz đấu trường — English 6</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #2b0a3d; --cream: #f5f3e7; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 50% -10%, #4a1268, var(--bg));
+    color: var(--cream); min-height: 100vh; padding: clamp(0.75rem, 2vw, 1.5rem);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .screen { width: 100%; max-width: 640px; text-align: center; }
+  h1 { font-size: clamp(1.4rem, 5vw, 2rem); margin-bottom: 0.5rem; }
+  .sub { opacity: .8; margin-bottom: 1.5rem; }
+  button.start, button.again {
+    font: inherit; font-weight: 800; cursor: pointer; border: none; border-radius: 999px;
+    padding: 1rem 2.2rem; min-height: 52px; font-size: 1.15rem; background: #fbbf24; color: #2b0a3d;
+    transition: transform .15s;
+  }
+  button.start:hover, button.again:hover { transform: scale(1.05); }
+  .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .qcount { font-weight: 700; opacity: .85; }
+  .score { font-weight: 800; color: #fbbf24; font-size: 1.2rem; }
+  .timer { position: relative; width: 54px; height: 54px; }
+  .timer svg { transform: rotate(-90deg); }
+  .timer .num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+  .question { font-size: clamp(1.2rem, 4vw, 1.7rem); font-weight: 700; margin: 1rem 0 1.5rem; line-height: 1.4; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .opt {
+    font: inherit; font-weight: 700; cursor: pointer; border: none; border-radius: 1rem;
+    padding: 1.1rem; min-height: 64px; font-size: 1.05rem; color: #fff; transition: transform .1s, opacity .2s;
+  }
+  .opt:hover { transform: scale(1.02); }
+  .opt:nth-child(1){ background:#e21b3c; } .opt:nth-child(2){ background:#1368ce; }
+  .opt:nth-child(3){ background:#d89e00; } .opt:nth-child(4){ background:#26890c; }
+  .opt.correct { outline: 4px solid #fff; animation: pop .3s; }
+  .opt.wrong { opacity: .45; animation: shake .3s; }
+  @keyframes pop { 50% { transform: scale(1.08); } }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+  .result-num { font-size: 3rem; font-weight: 800; color: #fbbf24; }
+  .hidden { display: none; }
+  @media (max-width: 400px){ .options{ grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="screen" id="startScreen">
+    <h1>⚔️ Đấu trường tiếng Anh</h1>
+    <p class="sub">8 câu hỏi từ vựng &amp; ngữ pháp lớp 6. Trả lời nhanh và đúng để ghi điểm cao!</p>
+    <button class="start" id="startBtn">Bắt đầu</button>
+  </div>
+
+  <div class="screen hidden" id="quizScreen">
+    <div class="top">
+      <span class="qcount" id="qcount"></span>
+      <div class="timer">
+        <svg width="54" height="54"><circle cx="27" cy="27" r="24" stroke="#ffffff33" stroke-width="5" fill="none"/>
+          <circle id="ring" cx="27" cy="27" r="24" stroke="#fbbf24" stroke-width="5" fill="none"
+            stroke-dasharray="150.8" stroke-dashoffset="0" stroke-linecap="round"/></svg>
+        <span class="num" id="tnum">15</span>
+      </div>
+      <span class="score" id="score">0</span>
+    </div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <div class="screen hidden" id="resultScreen">
+    <h1>Kết quả</h1>
+    <div class="result-num" id="finalScore"></div>
+    <p class="sub" id="finalMsg"></p>
+    <button class="again" id="againBtn">Chơi lại</button>
+  </div>
+
+<script>
+  const QUESTIONS = [
+    { q: "Choose the correct word: 'She ___ a student.'", opts: ["am","is","are","be"], a: 1 },
+    { q: "What is the plural of 'child'?", opts: ["childs","childes","children","child"], a: 2 },
+    { q: "'I go to school ___ Monday.'", opts: ["in","on","at","to"], a: 1 },
+    { q: "Which is a color?", opts: ["apple","blue","run","happy"], a: 1 },
+    { q: "'They ___ playing football now.'", opts: ["is","am","are","be"], a: 2 },
+    { q: "Opposite of 'big'?", opts: ["tall","small","long","wide"], a: 1 },
+    { q: "'My father ___ to work by car.'", opts: ["go","goes","going","gone"], a: 1 },
+    { q: "Which word is a fruit?", opts: ["banana","table","chair","door"], a: 0 }
+  ];
+  const TIME = 15, CIRC = 150.8;
+  let idx = 0, score = 0, timer = null, timeLeft = TIME, answered = false;
+  const $ = (id) => document.getElementById(id);
+
+  $("startBtn").addEventListener("click", start);
+  $("againBtn").addEventListener("click", start);
+  function start() {
+    idx = 0; score = 0; $("score").textContent = "0";
+    $("startScreen").classList.add("hidden"); $("resultScreen").classList.add("hidden");
+    $("quizScreen").classList.remove("hidden"); render();
+  }
+  function render() {
+    answered = false; timeLeft = TIME;
+    const item = QUESTIONS[idx];
+    $("qcount").textContent = "Câu " + (idx + 1) + "/" + QUESTIONS.length;
+    $("question").textContent = item.q;
+    const box = $("options"); box.innerHTML = "";
+    item.opts.forEach((o, i) => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.textContent = o;
+      b.addEventListener("click", () => choose(i, b));
+      box.appendChild(b);
+    });
+    updateTimer();
+    clearInterval(timer);
+    timer = setInterval(() => { timeLeft--; updateTimer(); if (timeLeft <= 0) choose(-1, null); }, 1000);
+  }
+  function updateTimer() {
+    $("tnum").textContent = Math.max(0, timeLeft);
+    $("ring").style.strokeDashoffset = CIRC * (1 - timeLeft / TIME);
+  }
+  function choose(i, btn) {
+    if (answered) return; answered = true; clearInterval(timer);
+    const item = QUESTIONS[idx];
+    const buttons = document.querySelectorAll(".opt");
+    buttons[item.a].classList.add("correct");
+    if (i >= 0 && i !== item.a) buttons[i].classList.add("wrong");
+    if (i === item.a) {
+      const bonus = Math.round(timeLeft / TIME * 5);
+      score += 10 + bonus; $("score").textContent = score;
+    }
+    setTimeout(() => { idx++; idx < QUESTIONS.length ? render() : finish(); }, 1200);
+  }
+  function finish() {
+    $("quizScreen").classList.add("hidden"); $("resultScreen").classList.remove("hidden");
+    const max = QUESTIONS.length * 15;
+    const pct = Math.round(score / max * 100);
+    $("finalScore").textContent = score + " điểm";
+    let msg;
+    if (pct >= 80) msg = "Xuất sắc! Em nắm bài rất chắc 🎉";
+    else if (pct >= 50) msg = "Tốt lắm! Ôn thêm chút nữa là hoàn hảo.";
+    else msg = "Cố lên nhé! Hãy xem lại từ vựng và thử lại.";
+    $("finalMsg").textContent = "Đạt " + pct + "% — " + msg;
+  }
+</script>
+</body>
+</html>

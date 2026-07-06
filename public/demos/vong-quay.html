@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vòng quay câu hỏi — Tỉ lệ thức (Toán 7)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #0f1226; --card: #1a1e3a; --gold: #fbbf24; --cream: #f5f3e7; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 50% 0%, #23285a, var(--bg));
+    color: var(--cream); min-height: 100vh; padding: clamp(0.75rem, 2vw, 1.5rem);
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  }
+  h1 { font-size: clamp(1.1rem, 3.5vw, 1.6rem); text-align: center; color: var(--gold); }
+  .wheel-wrap { position: relative; width: min(72vw, 340px); aspect-ratio: 1; }
+  .pointer {
+    position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent;
+    border-top: 24px solid var(--gold); z-index: 5; filter: drop-shadow(0 2px 4px #0008);
+  }
+  svg { width: 100%; height: 100%; display: block; transition: none; }
+  .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+  button {
+    font: inherit; font-weight: 700; cursor: pointer; border: none; border-radius: 999px;
+    padding: 0.8rem 1.6rem; min-height: 48px; font-size: 1rem; color: #1a1e3a; background: var(--gold);
+    transition: transform .15s, opacity .15s;
+  }
+  button:hover { transform: scale(1.04); }
+  button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  button.ghost { background: #2c3160; color: var(--cream); }
+  .scores { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .team {
+    background: var(--card); border-radius: 1rem; padding: 0.8rem 1.2rem; text-align: center; min-width: 130px;
+  }
+  .team h3 { font-size: 0.9rem; opacity: .8; }
+  .team .pts { font-size: 2rem; font-weight: 800; color: var(--gold); margin: 0.2rem 0; }
+  .team .btns { display: flex; gap: 0.4rem; justify-content: center; }
+  .team .btns button { padding: 0.35rem 0.8rem; min-height: 40px; font-size: 1.1rem; }
+  .modal {
+    position: fixed; inset: 0; background: #0009; display: none; align-items: center; justify-content: center;
+    padding: 1rem; z-index: 20;
+  }
+  .modal.open { display: flex; }
+  .modal-card {
+    background: var(--card); border-radius: 1.5rem; padding: clamp(1.2rem, 4vw, 2rem); max-width: 480px; width: 100%;
+    text-align: center; border: 2px solid var(--gold);
+  }
+  .q-text { font-size: clamp(1.2rem, 4vw, 1.6rem); margin-bottom: 1rem; line-height: 1.4; }
+  .answer { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin: 1rem 0; display: none; }
+  .answer.show { display: block; }
+  canvas.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 30; }
+</style>
+</head>
+<body>
+  <h1>Vòng quay khởi động — Tỉ lệ thức</h1>
+  <div class="wheel-wrap">
+    <div class="pointer"></div>
+    <svg id="wheel" viewBox="0 0 200 200" aria-label="Vòng quay câu hỏi"></svg>
+  </div>
+  <div class="controls">
+    <button id="spinBtn">Quay</button>
+  </div>
+  <div class="scores">
+    <div class="team"><h3>Đội A</h3><div class="pts" id="ptsA">0</div>
+      <div class="btns"><button data-team="A" data-delta="-1">−</button><button data-team="A" data-delta="1">+</button></div></div>
+    <div class="team"><h3>Đội B</h3><div class="pts" id="ptsB">0</div>
+      <div class="btns"><button data-team="B" data-delta="-1">−</button><button data-team="B" data-delta="1">+</button></div></div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="q-text" id="qText"></div>
+      <div class="answer" id="answer"></div>
+      <div class="controls">
+        <button id="revealBtn">Hiện đáp án</button>
+        <button class="ghost" id="correctBtn">Trả lời đúng 🎉</button>
+        <button class="ghost" id="closeBtn">Đóng</button>
+      </div>
+    </div>
+  </div>
+  <canvas class="confetti" id="confetti"></canvas>
+
+<script>
+  const QUESTIONS = [
+    { q: "Viết tỉ số của 3 và 5.", a: "3/5" },
+    { q: "Tìm x biết x/4 = 6/8.", a: "x = 3" },
+    { q: "Hai tỉ số 2/3 và 4/6 có lập thành tỉ lệ thức không?", a: "Có, vì 2·6 = 3·4 = 12" },
+    { q: "Tìm x biết 2/x = 8/12.", a: "x = 3" },
+    { q: "Tỉ lệ thức a/b = c/d thì tích nào bằng nhau?", a: "a·d = b·c" },
+    { q: "Rút gọn tỉ số 15/25.", a: "3/5" },
+    { q: "Tìm x biết x/9 = 2/3.", a: "x = 6" },
+    { q: "Viết tỉ lệ thức từ đẳng thức 4·9 = 6·6.", a: "4/6 = 6/9" },
+  ];
+  const COLORS = ["#f43f5e","#fb923c","#fbbf24","#4ade80","#22d3ee","#818cf8","#c084fc","#f472b6"];
+  const N = QUESTIONS.length, seg = 360 / N;
+  const wheel = document.getElementById("wheel");
+  const cx = 100, cy = 100, r = 96;
+
+  function polar(angleDeg, radius) {
+    const a = (angleDeg - 90) * Math.PI / 180;
+    return [cx + radius * Math.cos(a), cy + radius * Math.sin(a)];
+  }
+  QUESTIONS.forEach((_, i) => {
+    const start = i * seg, end = start + seg;
+    const [x1, y1] = polar(start, r), [x2, y2] = polar(end, r);
+    const large = seg > 180 ? 1 : 0;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`);
+    path.setAttribute("fill", COLORS[i % COLORS.length]);
+    wheel.appendChild(path);
+    const [tx, ty] = polar(start + seg / 2, r * 0.62);
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", tx); t.setAttribute("y", ty);
+    t.setAttribute("text-anchor", "middle"); t.setAttribute("dominant-baseline", "middle");
+    t.setAttribute("font-size", "13"); t.setAttribute("font-weight", "800"); t.setAttribute("fill", "#1a1e3a");
+    t.textContent = i + 1;
+    wheel.appendChild(t);
+  });
+
+  let rotation = 0, spinning = false;
+  const spinBtn = document.getElementById("spinBtn");
+  function spin() {
+    if (spinning) return;
+    spinning = true; spinBtn.disabled = true;
+    const idx = Math.floor(Math.random() * N);
+    const target = 360 * 4 + (360 - (idx * seg + seg / 2));
+    const startRot = rotation % 360;
+    const total = startRot + target;
+    const dur = 3800; const t0 = performance.now();
+    function frame(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      rotation = startRot + (total - startRot) * eased;
+      wheel.style.transform = `rotate(${rotation}deg)`;
+      if (p < 1) requestAnimationFrame(frame);
+      else { spinning = false; spinBtn.disabled = false; showQuestion(idx); }
+    }
+    requestAnimationFrame(frame);
+  }
+  spinBtn.addEventListener("click", spin);
+
+  const modal = document.getElementById("modal");
+  const qText = document.getElementById("qText");
+  const answerEl = document.getElementById("answer");
+  function showQuestion(i) {
+    qText.textContent = "Câu " + (i + 1) + ": " + QUESTIONS[i].q;
+    answerEl.textContent = "Đáp án: " + QUESTIONS[i].a;
+    answerEl.classList.remove("show");
+    modal.classList.add("open");
+  }
+  document.getElementById("revealBtn").addEventListener("click", () => answerEl.classList.add("show"));
+  document.getElementById("closeBtn").addEventListener("click", () => modal.classList.remove("open"));
+  document.getElementById("correctBtn").addEventListener("click", () => { launchConfetti(); });
+
+  const scores = { A: 0, B: 0 };
+  document.querySelectorAll(".team .btns button").forEach((b) => {
+    b.addEventListener("click", () => {
+      const team = b.dataset.team; const delta = parseInt(b.dataset.delta, 10);
+      scores[team] = Math.max(0, scores[team] + delta);
+      document.getElementById("pts" + team).textContent = scores[team];
+    });
+  });
+
+  const cvs = document.getElementById("confetti"); const ctx = cvs.getContext("2d");
+  let parts = [];
+  function resize() { cvs.width = innerWidth; cvs.height = innerHeight; }
+  resize(); addEventListener("resize", resize);
+  function launchConfetti() {
+    for (let i = 0; i < 120; i++) {
+      parts.push({ x: innerWidth / 2, y: innerHeight / 2, vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 0.9) * 12, c: COLORS[i % COLORS.length], life: 90 });
+    }
+    if (parts.length <= 120) animateConfetti();
+  }
+  function animateConfetti() {
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    parts.forEach((p) => { p.x += p.vx; p.y += p.vy; p.vy += 0.3; p.life--;
+      ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, 7, 7); });
+    parts = parts.filter((p) => p.life > 0 && p.y < cvs.height);
+    if (parts.length) requestAnimationFrame(animateConfetti);
+    else ctx.clearRect(0, 0, cvs.width, cvs.height);
+  }
+</script>
+</body>
+</html>

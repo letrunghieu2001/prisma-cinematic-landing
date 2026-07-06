@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bài học tương tác: Quang hợp (KHTN 7)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #f0f7f2; --card: #fff; --green: #17924a; --ink: #1f2a24; --sun: #f5a623; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--ink); min-height: 100vh; padding: clamp(0.75rem, 2vw, 1.5rem);
+  }
+  h1 { font-size: clamp(1.1rem, 3.5vw, 1.5rem); color: var(--green); text-align: center; margin-bottom: 0.25rem; }
+  .sub { text-align: center; color: #5a6b60; font-size: 0.9rem; margin-bottom: 1rem; }
+  .layout { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start; justify-content: center; }
+  .diagram { flex: 1 1 300px; max-width: 460px; background: var(--card); border-radius: 1.25rem; padding: 1rem; box-shadow: 0 6px 24px #0f3d221a; }
+  svg { width: 100%; height: auto; display: block; }
+  .hot { cursor: pointer; transition: opacity .15s; }
+  .hot:hover { opacity: 0.75; }
+  .panel { flex: 1 1 260px; max-width: 360px; background: var(--card); border-radius: 1.25rem; padding: 1.25rem; box-shadow: 0 6px 24px #0f3d221a; min-height: 200px; }
+  .panel h2 { color: var(--green); font-size: 1.15rem; margin-bottom: 0.5rem; }
+  .panel p { line-height: 1.6; font-size: 0.98rem; }
+  .hint { color: #7a8a80; font-style: italic; }
+  .btn { font: inherit; font-weight: 700; cursor: pointer; border: none; border-radius: 999px; padding: 0.75rem 1.4rem; min-height: 48px; background: var(--green); color: #fff; margin-top: 1rem; transition: transform .15s; }
+  .btn:hover { transform: scale(1.04); }
+  .quiz { margin-top: 1rem; display: none; }
+  .quiz.open { display: block; }
+  .qitem { margin-bottom: 0.9rem; }
+  .qitem label { display: block; margin-bottom: 0.3rem; font-weight: 600; }
+  .qitem input { font: inherit; padding: 0.6rem 0.8rem; border: 2px solid #cddDcf; border-radius: 0.6rem; width: 100%; }
+  .qitem .fb { font-size: 0.85rem; margin-top: 0.25rem; min-height: 1.1em; }
+  .ok { color: var(--green); font-weight: 700; }
+  .no { color: #c0392b; font-weight: 700; }
+</style>
+</head>
+<body>
+  <h1>Quang hợp diễn ra như thế nào?</h1>
+  <p class="sub">Bấm vào từng bộ phận của cây để tìm hiểu vai trò của nó trong quá trình quang hợp.</p>
+  <div class="layout">
+    <div class="diagram">
+      <svg viewBox="0 0 300 320" aria-label="Sơ đồ quang hợp">
+        <!-- sun -->
+        <g class="hot" data-key="sun">
+          <circle cx="55" cy="45" r="26" fill="#f5a623"/>
+          <g stroke="#f5a623" stroke-width="3">
+            <line x1="55" y1="8" x2="55" y2="0"/><line x1="18" y1="45" x2="10" y2="45"/>
+            <line x1="28" y1="18" x2="22" y2="12"/><line x1="82" y1="18" x2="88" y2="12"/>
+          </g>
+          <text x="55" y="82" text-anchor="middle" font-size="11" fill="#8a6314">Ánh sáng</text>
+        </g>
+        <!-- leaf -->
+        <g class="hot" data-key="la">
+          <ellipse cx="180" cy="90" rx="60" ry="34" fill="#3fae63"/>
+          <path d="M120 90 Q180 78 240 90" stroke="#1f6b39" stroke-width="2" fill="none"/>
+          <text x="180" y="94" text-anchor="middle" font-size="12" fill="#0f3d22" font-weight="700">Lá</text>
+        </g>
+        <!-- stem -->
+        <rect x="172" y="120" width="10" height="120" fill="#7a5230"/>
+        <!-- root -->
+        <g class="hot" data-key="re">
+          <path d="M177 240 q-30 30 -50 60 M177 240 q30 30 50 60 M177 240 q0 40 0 70" stroke="#7a5230" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <text x="177" y="315" text-anchor="middle" font-size="11" fill="#5a3d20">Rễ</text>
+        </g>
+        <!-- arrows -->
+        <g class="hot" data-key="co2">
+          <line x1="255" y1="120" x2="215" y2="98" stroke="#4d7cff" stroke-width="3" marker-end="url(#ar)"/>
+          <text x="262" y="124" font-size="11" fill="#3358c0">CO₂</text>
+        </g>
+        <g class="hot" data-key="o2">
+          <line x1="145" y1="60" x2="120" y2="45" stroke="#17924a" stroke-width="3" marker-end="url(#ar)"/>
+          <text x="90" y="42" font-size="11" fill="#0f6b34">O₂</text>
+        </g>
+        <g class="hot" data-key="h2o">
+          <line x1="150" y1="290" x2="172" y2="240" stroke="#2aa6d6" stroke-width="3" marker-end="url(#ar)"/>
+          <text x="110" y="292" font-size="11" fill="#1c7ba0">H₂O</text>
+        </g>
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="panel">
+      <div id="info">
+        <h2>Khám phá quang hợp</h2>
+        <p class="hint">Chọn một bộ phận trên sơ đồ để xem giải thích. Sau đó thử phần "Kiểm tra nhanh" nhé.</p>
+      </div>
+      <button class="btn" id="quizBtn">Kiểm tra nhanh</button>
+      <div class="quiz" id="quiz">
+        <div class="qitem">
+          <label>1. Khí cây hút vào để quang hợp là khí gì?</label>
+          <input data-ans="co2" placeholder="Nhập tên khí…" />
+          <div class="fb"></div>
+        </div>
+        <div class="qitem">
+          <label>2. Khí cây thải ra sau quang hợp là khí gì?</label>
+          <input data-ans="o2" placeholder="Nhập tên khí…" />
+          <div class="fb"></div>
+        </div>
+        <div class="qitem">
+          <label>3. Bộ phận nào của cây hút nước từ đất?</label>
+          <input data-ans="re" placeholder="Nhập bộ phận…" />
+          <div class="fb"></div>
+        </div>
+        <button class="btn" id="checkBtn">Chấm bài</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const INFO = {
+    sun: ["Ánh sáng Mặt Trời", "Là nguồn năng lượng cho quang hợp. Lá hấp thụ ánh sáng nhờ chất diệp lục để biến nước và khí carbonic thành chất hữu cơ."],
+    la: ["Lá cây", "Nơi quang hợp diễn ra mạnh nhất. Trong lá có chất diệp lục màu xanh giúp hấp thụ ánh sáng để tạo ra glucose và khí oxygen."],
+    re: ["Rễ cây", "Hút nước và muối khoáng từ đất, rồi vận chuyển lên lá qua thân để cung cấp nguyên liệu cho quang hợp."],
+    co2: ["Khí carbonic (CO₂)", "Cây lấy khí CO₂ từ không khí qua các lỗ khí ở lá. Đây là một nguyên liệu của quang hợp."],
+    o2: ["Khí oxygen (O₂)", "Là sản phẩm cây thải ra sau quang hợp, cung cấp oxygen cho sự sống trên Trái Đất."],
+    h2o: ["Nước (H₂O)", "Được rễ hút lên và là nguyên liệu kết hợp với CO₂ dưới ánh sáng để tạo ra chất hữu cơ."]
+  };
+  const info = document.getElementById("info");
+  document.querySelectorAll(".hot").forEach((el) => {
+    el.addEventListener("click", () => {
+      const d = INFO[el.dataset.key];
+      info.innerHTML = "<h2>" + d[0] + "</h2><p>" + d[1] + "</p>";
+    });
+  });
+  document.getElementById("quizBtn").addEventListener("click", () => {
+    document.getElementById("quiz").classList.toggle("open");
+  });
+  const ACCEPT = {
+    co2: ["co2","carbonic","cacbonic","khí carbonic","khi carbonic","co₂","cacbon dioxit","carbon dioxide"],
+    o2: ["o2","oxi","oxy","oxygen","khí oxygen","khi oxy","o₂"],
+    re: ["re","rễ","rễ cây","re cay"]
+  };
+  function norm(s){ return s.toLowerCase().trim().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d"); }
+  document.getElementById("checkBtn").addEventListener("click", () => {
+    document.querySelectorAll(".qitem").forEach((item) => {
+      const inp = item.querySelector("input"); const fb = item.querySelector(".fb");
+      const key = inp.dataset.ans; const val = norm(inp.value);
+      const ok = ACCEPT[key].some((a) => norm(a) === val || (val.length > 1 && norm(a).includes(val)));
+      fb.textContent = ok ? "✓ Chính xác!" : "✗ Chưa đúng, thử lại nhé.";
+      fb.className = "fb " + (ok ? "ok" : "no");
+    });
+  });
+</script>
+</body>
+</html>
