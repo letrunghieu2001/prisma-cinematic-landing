@@ -46,7 +46,6 @@ export function LessonCard({ item, onOpen, dimmed }: LessonCardProps) {
 
   return (
     <motion.article
-      layoutId={item.id}
       className={`overflow-hidden rounded-2xl bg-[#101010] transition-all duration-300 ${
         dimmed ? "opacity-35 grayscale" : ""
       }`}
@@ -63,16 +62,15 @@ export function LessonCard({ item, onOpen, dimmed }: LessonCardProps) {
               title={`Demo: ${item.title}`}
               sandbox="allow-scripts"
               loading="lazy"
-              className="h-full w-full border-0"
+              tabIndex={-1}
+              className="pointer-events-none h-full w-full border-0"
             />
-            {/* Lớp phủ bắt click mở modal; khi hover thì cho tương tác demo */}
+            {/* Preview là ảnh động; bấm vào để mở chi tiết (demo tương tác được trong modal) */}
             <button
               type="button"
               aria-label={`Xem chi tiết ${item.title}`}
               onClick={() => onOpen(item)}
-              className={`absolute inset-0 cursor-pointer bg-transparent ${
-                hovering ? "pointer-events-none" : ""
-              }`}
+              className="absolute inset-0 cursor-pointer bg-transparent transition-colors hover:bg-white/5"
             />
           </>
         ) : (

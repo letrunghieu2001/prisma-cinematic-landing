@@ -21,7 +21,6 @@ export function PromptCard({ item, onOpen }: PromptCardProps) {
   return (
     <motion.article
       layout
-      layoutId={item.id}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
@@ -31,7 +30,11 @@ export function PromptCard({ item, onOpen }: PromptCardProps) {
       aria-label={`Xem chi tiết ${item.title}`}
       onClick={() => onOpen(item)}
       onKeyDown={(e) => {
-        if (e.key === "Enter") onOpen(item);
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen(item);
+        }
       }}
       className="flex cursor-pointer flex-col overflow-hidden rounded-2xl border-l-2 bg-[#101010] transition-colors hover:bg-[#141414] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DEDBC8]"
       style={{ borderLeftColor: color }}

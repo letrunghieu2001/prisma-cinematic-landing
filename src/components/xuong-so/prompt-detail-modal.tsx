@@ -60,7 +60,10 @@ function ModalBody({ item, onClose }: { item: PromptItem; onClose: () => void })
       aria-label={item.title}
     >
       <motion.div
-        layoutId={item.id}
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         className="relative mx-auto max-w-3xl rounded-[2rem] bg-[#101010] p-6 md:p-10"
         onClick={(e) => e.stopPropagation()}
       >
