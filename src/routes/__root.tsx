@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -77,14 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Prisma — A collective of visual artists & storytellers" },
-      { name: "description", content: "Prisma is a worldwide network of visual artists, filmmakers and storytellers unlocking potential through unique perspectives." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Prisma — A collective of visual artists & storytellers" },
-      { property: "og:description", content: "A worldwide network of filmmakers and storytellers bound by passion." },
+      { title: "Xưởng Số — Xưởng tạo bài học & học liệu số bằng AI" },
+      { name: "description", content: "Chọn template theo tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học và học liệu số của riêng bạn." },
+      { name: "author", content: "Xưởng Số" },
+      { property: "og:title", content: "Xưởng Số — Xưởng tạo bài học & học liệu số bằng AI" },
+      { property: "og:description", content: "Nền tảng chia sẻ prompt tạo bài học HTML và 9 loại học liệu số, thuộc hệ sinh thái Trường học số." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,500;1,600;1,700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -108,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="vi">
       <head>
         <HeadContent />
       </head>
@@ -127,6 +127,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster theme="dark" position="bottom-center" />
     </QueryClientProvider>
   );
 }
