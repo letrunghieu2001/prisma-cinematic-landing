@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { AnimatePresence } from "motion/react";
 import { SearchX } from "lucide-react";
 
@@ -13,8 +12,6 @@ interface ContentMasonryProps {
 
 /** Lưới masonry (CSS columns) — card cao thấp khác nhau tạo nhịp Pinterest */
 export function ContentMasonry({ items, onOpen, onClearFilter }: ContentMasonryProps) {
-  const [previewId, setPreviewId] = useState<string | null>(null);
-
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-[#E9EAEB] bg-white px-6 py-20 text-center">
@@ -35,13 +32,7 @@ export function ContentMasonry({ items, onOpen, onClearFilter }: ContentMasonryP
     <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
       <AnimatePresence>
         {items.map((item) => (
-          <ContentCard
-            key={item.id}
-            item={item}
-            previewId={previewId}
-            onRequestPreview={setPreviewId}
-            onOpen={onOpen}
-          />
+          <ContentCard key={item.id} item={item} onOpen={onOpen} />
         ))}
       </AnimatePresence>
     </div>

@@ -20,7 +20,24 @@ export function ContentLibrary({ items, filter, onFilterChange, onOpen }: Conten
   const visible = useMemo(() => filterContent(items, filter), [items, filter]);
 
   return (
-    <section id="content" className="mx-auto max-w-[1440px] px-4 pb-24 sm:px-6 lg:px-8">
+    <section id="content" className="mx-auto max-w-[1440px] px-4 pt-6 pb-24 sm:px-6 lg:px-8">
+      {/* Header full-width, nối liền mạch từ hero */}
+      <div className="mb-6 flex items-end justify-between gap-3 border-b border-[#E9EAEB] pb-5">
+        <div>
+          <h2 className="text-2xl font-bold text-[#181D27] sm:text-3xl">Kho nội dung</h2>
+          <p className="mt-1 text-sm text-[#717680]">
+            {visible.length} bài học &amp; học liệu — di chuột vào để xem thử ngay
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          className="inline-flex flex-none items-center gap-2 rounded-full border border-[#E9EAEB] bg-white px-4 py-2 text-sm font-medium text-[#344054] lg:hidden"
+        >
+          <SlidersHorizontal className="h-4 w-4" /> Bộ lọc
+        </button>
+      </div>
+
       <div className="flex gap-8">
         {/* Sidebar desktop */}
         <aside className="hidden w-64 flex-none lg:block">
@@ -34,25 +51,8 @@ export function ContentLibrary({ items, filter, onFilterChange, onOpen }: Conten
           </div>
         </aside>
 
-        {/* Nội dung */}
+        {/* Lưới nội dung */}
         <div className="min-w-0 flex-1">
-          {/* Thanh trên: tiêu đề + nút lọc mobile */}
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-bold text-[#181D27]">Kho nội dung</h2>
-              <p className="text-sm text-[#717680]">
-                {visible.length} bài học &amp; học liệu — hover để xem thử ngay
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-[#E9EAEB] bg-white px-4 py-2 text-sm font-medium text-[#344054] lg:hidden"
-            >
-              <SlidersHorizontal className="h-4 w-4" /> Bộ lọc
-            </button>
-          </div>
-
           <ContentMasonry
             items={visible}
             onOpen={onOpen}

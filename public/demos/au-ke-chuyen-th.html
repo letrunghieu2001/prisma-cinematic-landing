@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#C11574}
 .pl{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 .cover{aspect-ratio:1/1;max-width:200px;margin:0 auto;border-radius:16px;background:linear-gradient(135deg,#C11574,#fff);display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)}
@@ -35,9 +36,15 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <div class="ctrls"><button class="btn g" onclick="skip(-1)">‹‹ 10s</button>
 <button class="play" id="pp" aria-label="Tạm dừng"><svg id="ppi" width="22" height="22" viewBox="0 0 24 24" fill="#fff"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></button>
 <button class="btn g" onclick="skip(1)">10s ››</button></div></div></div>
-</div><script>var t=0,T=260,playing=true;
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var t=0,T=260,playing=true;
 function fmt(s){s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function tick(){if(playing){t+=1;if(t>T)t=0;document.getElementById('cur').textContent=fmt(t);document.getElementById('fill').style.width=(t/T*100)+'%'}}
-var iv=setInterval(tick,1000);
+var iv=loop(tick,1000);
 document.getElementById('pp').onclick=function(){playing=!playing;document.getElementById('ppi').innerHTML=playing?'<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>':'<path d="M7 5l12 7-12 7z"/>';document.querySelectorAll('.wave i').forEach(function(b){b.style.animationPlayState=playing?'running':'paused'})};
 function skip(d){t=Math.min(T,Math.max(0,t+d*10));document.getElementById('cur').textContent=fmt(t);document.getElementById('fill').style.width=(t/T*100)+'%'}</script></body></html>

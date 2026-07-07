@@ -69,13 +69,13 @@ function ModalBody({ item, onClose }: { item: PromptItem; onClose: () => void })
         {/* Preview lớn */}
         <div className="mb-5 overflow-hidden rounded-xl border border-[#E9EAEB]">
           <iframe
-            src={item.demoUrl}
+            src={`${item.demoUrl}?play=1`}
             title={`Demo: ${item.title}`}
             sandbox="allow-scripts"
             className="h-[380px] w-full border-0 bg-white"
           />
           <a
-            href={item.demoUrl}
+            href={`${item.demoUrl}?play=1`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 border-t border-[#E9EAEB] bg-[#FAFAFA] py-2 text-sm text-[#535862] transition-colors hover:text-[#0061AF]"

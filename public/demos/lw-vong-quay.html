@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#0061AF}
 .wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
 .wheel{width:min(60vw,240px);aspect-ratio:1;transition:none}
@@ -21,9 +22,15 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <body><div class="app">
 <div class="bar"><span class="dot"></span><span class="t">Vòng quay câu hỏi khởi động</span><span class="s"></span><span class="tag">Trường học số</span></div>
 <div class="body"><div class="wrap"><div class="spin"><div class="ptr"></div><svg class="wheel" id="w" viewBox="0 0 200 200"></svg></div><div class="q" id="q">Bấm quay để bắt đầu</div><button class="btn" id="b">Quay</button></div></div>
-</div><script>var Q=["Viết tỉ số của 3 và 5","Tìm x: x/4=6/8","Rút gọn 15/25","2/3 và 4/6 có bằng nhau?","a/b=c/d thì?","Tìm x: x/9=2/3","Tỉ số 8 và 12","Lập tỉ lệ thức từ 4·9=6·6"];
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var Q=["Viết tỉ số của 3 và 5","Tìm x: x/4=6/8","Rút gọn 15/25","2/3 và 4/6 có bằng nhau?","a/b=c/d thì?","Tìm x: x/9=2/3","Tỉ số 8 và 12","Lập tỉ lệ thức từ 4·9=6·6"];
 var C=["#f43f5e","#fb923c","#fbbf24","#4ade80","#22d3ee","#818cf8","#c084fc","#f472b6"],N=Q.length,seg=360/N,w=document.getElementById('w'),rot=0,spin=false;
 function pol(a,r){a=(a-90)*Math.PI/180;return[100+r*Math.cos(a),100+r*Math.sin(a)]}
 for(var i=0;i<N;i++){var s=i*seg,e=s+seg,p1=pol(s,96),p2=pol(e,96);var pa=document.createElementNS('http://www.w3.org/2000/svg','path');pa.setAttribute('d','M100,100 L'+p1[0]+','+p1[1]+' A96,96 0 0 1 '+p2[0]+','+p2[1]+' Z');pa.setAttribute('fill',C[i]);w.appendChild(pa);var tp=pol(s+seg/2,62),t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',tp[0]);t.setAttribute('y',tp[1]);t.setAttribute('text-anchor','middle');t.setAttribute('font-size','13');t.setAttribute('font-weight','800');t.setAttribute('fill','#181d27');t.textContent=i+1;w.appendChild(t)}
 function go(){if(spin)return;spin=true;var idx=Math.floor(Math.random()*N),target=360*4+(360-(idx*seg+seg/2)),start=rot%360,t0=performance.now();function fr(n){var p=Math.min((n-t0)/3600,1),e=1-Math.pow(1-p,3);rot=start+(target-start)*e;w.style.transform='rotate('+rot+'deg)';if(p<1)requestAnimationFrame(fr);else{spin=false;document.getElementById('q').textContent='Câu '+(idx+1)+': '+Q[idx]}}requestAnimationFrame(fr)}
-document.getElementById('b').onclick=go;setTimeout(go,600);</script></body></html>
+document.getElementById('b').onclick=go;document.addEventListener('ths-play',function(){setTimeout(go,300)});</script></body></html>

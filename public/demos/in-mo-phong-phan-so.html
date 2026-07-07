@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#9F1AB1}
 .wrap{max-width:420px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
 .pie{width:200px;height:200px;border-radius:50%;position:relative;background:conic-gradient(#9F1AB1 0 0)}
@@ -21,7 +22,13 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <body><div class="app">
 <div class="bar"><span class="dot"></span><span class="t">Mô phỏng chia phần bánh</span><span class="s"></span><span class="tag">Trường học số</span></div>
 <div class="body"><div class="wrap"><span class="badge" style="background:#FDF4FF;color:#9F1AB1">Mô phỏng phân số · Tiểu học</span><div class="pie" id="pie"></div><div class="frac" id="f">0/4</div><div class="ctrls" id="c"></div></div></div>
-</div><script>var parts=4,fill=0;var pie=document.getElementById('pie');
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var parts=4,fill=0;var pie=document.getElementById('pie');
 function draw(){var deg=fill/parts*360;pie.style.background='conic-gradient(#9F1AB1 0 '+deg+'deg,#f3e8ff '+deg+'deg 360deg)';document.getElementById('f').textContent=fill+'/'+parts}
 function build(){var c=document.getElementById('c');c.innerHTML='';[2,3,4,6,8].forEach(function(n){var b=document.createElement('button');b.className='ch';b.textContent=n+' phần';b.onclick=function(){parts=n;fill=Math.min(fill,n);draw()};c.appendChild(b)})}
-build();draw();var d=1;setInterval(function(){fill+=d;if(fill>=parts||fill<=0)d=-d;fill=Math.max(0,Math.min(parts,fill));draw()},900);</script></body></html>
+build();draw();var d=1;loop(function(){fill+=d;if(fill>=parts||fill<=0)d=-d;fill=Math.max(0,Math.min(parts,fill));draw()},900);</script></body></html>

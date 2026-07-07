@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#0061AF}
 .qz{max-width:520px;margin:0 auto}.q{font-size:18px;font-weight:700;margin:8px 0 14px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -23,8 +24,14 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <body><div class="app">
 <div class="bar"><span class="dot"></span><span class="t">Quiz đấu trường · Tiếng Anh 6</span><span class="s"></span><span class="tag">Trường học số</span></div>
 <div class="body"><div class="qz"><div class="top"><span id="qn">Câu 1/3</span><span class="sc" id="sc">0 điểm</span></div><div class="q" id="q"></div><div class="opts" id="o"></div></div></div>
-</div><script>var Q=[{"q":"She ___ a student.","o":["am","is","are","be"],"a":1},{"q":"Plural of 'child'?","o":["childs","children","childes","child"],"a":1},{"q":"Opposite of 'big'?","o":["tall","small","long","wide"],"a":1}],i=0,sc=0,ph=0;
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var Q=[{"q":"She ___ a student.","o":["am","is","are","be"],"a":1},{"q":"Plural of 'child'?","o":["childs","children","childes","child"],"a":1},{"q":"Opposite of 'big'?","o":["tall","small","long","wide"],"a":1}],i=0,sc=0,ph=0;
 function render(){var q=Q[i];document.getElementById('qn').textContent='Câu '+(i+1)+'/'+Q.length;document.getElementById('q').textContent=q.q;var o=document.getElementById('o');o.innerHTML='';q.o.forEach(function(op){var b=document.createElement('button');b.className='opt';b.textContent=op;o.appendChild(b)})}
 render();
 function step(){ph++;var q=Q[i],b=document.querySelectorAll('.opt');if(ph===1){b.forEach(function(e,k){if(k!==q.a)e.classList.add('dim')});sc+=10;document.getElementById('sc').textContent=sc+' điểm'}else{ph=0;i=(i+1)%Q.length;if(i===0)sc=0;render()}}
-setInterval(step,1500);</script></body></html>
+loop(step,1500);</script></body></html>

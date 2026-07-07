@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#F04438}
 .scene{height:380px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#0f1e17,#0a1410);border-radius:16px;position:relative;perspective:800px}
 .cell{width:230px;height:230px;border-radius:46% 54% 52% 48%;background:radial-gradient(circle at 40% 35%,#1b4d3a,#0e3325);border:3px solid #2f7d5b;position:relative;animation:rot 14s linear infinite;transform-style:preserve-3d}
@@ -26,4 +27,10 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <body><div class="app">
 <div class="bar"><span class="dot"></span><span class="t">Mô hình 3D tế bào thực vật</span><span class="s"></span><span class="tag">Trường học số</span></div>
 <div class="body"><div class="scene"><div class="cell"><div class="org n"></div><div class="org c1"></div><div class="org c2"></div><div class="org v"></div></div><div class="hint">Tế bào thực vật tự xoay · bấm bào quan để xem chú thích (mô phỏng)</div></div></div>
-</div><script></script></body></html>
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+</script></body></html>

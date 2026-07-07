@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#0061AF}
 .wrap{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
 .diagram{flex:1 1 240px;max-width:320px}.panel{flex:1 1 220px;max-width:300px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px}
@@ -25,8 +26,14 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <rect x="115" y="94" width="8" height="80" fill="#7a5230"/>
 <g class="hot" data-k="re"><path d="M119 174 q-20 20 -34 40 M119 174 q20 20 34 40" stroke="#7a5230" stroke-width="5" fill="none" stroke-linecap="round"/><text x="119" y="216" text-anchor="middle" font-size="10" fill="#5a3d20">Rễ</text></g></svg></div>
 <div class="panel" id="p"><h3>Khám phá quang hợp</h3><p style="color:var(--ink2);font-size:13px">Bấm vào từng bộ phận để xem vai trò trong quang hợp.</p></div></div></div>
-</div><script>var I={sun:['Ánh sáng Mặt Trời','Cung cấp năng lượng cho quang hợp; lá hấp thụ nhờ diệp lục.'],la:['Lá cây','Nơi quang hợp diễn ra; chứa diệp lục tạo glucose và oxygen.'],re:['Rễ cây','Hút nước và muối khoáng đưa lên lá làm nguyên liệu.']};
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var I={sun:['Ánh sáng Mặt Trời','Cung cấp năng lượng cho quang hợp; lá hấp thụ nhờ diệp lục.'],la:['Lá cây','Nơi quang hợp diễn ra; chứa diệp lục tạo glucose và oxygen.'],re:['Rễ cây','Hút nước và muối khoáng đưa lên lá làm nguyên liệu.']};
 var keys=['sun','la','re'],k=0;var p=document.getElementById('p');
 function pick(key){var d=I[key];p.innerHTML='<h3>'+d[0]+'</h3><p style="color:var(--ink2);font-size:13px">'+d[1]+'</p>'}
 document.querySelectorAll('.hot').forEach(function(el){el.onclick=function(){pick(el.dataset.k)}});
-setInterval(function(){pick(keys[k]);k=(k+1)%keys.length},2200);</script></body></html>
+loop(function(){pick(keys[k]);k=(k+1)%keys.length},2200);</script></body></html>

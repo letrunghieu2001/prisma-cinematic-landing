@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#0BA5EC}
 .ig{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
 .ig h2{text-align:center;color:#0BA5EC;margin-bottom:6px}
@@ -24,4 +25,10 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <body><div class="app">
 <div class="bar"><span class="dot"></span><span class="t">Vòng tuần hoàn của nước</span><span class="s"></span><span class="tag">Trường học số</span></div>
 <div class="body"><div class="ig"><h2>Vòng tuần hoàn của nước</h2><div class="step" data-i="0"><div class="num">1</div><div class="txt"><b>Bốc hơi</b><span>Nước từ ao hồ, biển bốc hơi lên không khí nhờ nhiệt Mặt Trời.</span></div></div><div class="step" data-i="1"><div class="num">2</div><div class="txt"><b>Ngưng tụ</b><span>Hơi nước gặp lạnh trên cao ngưng tụ thành mây.</span></div></div><div class="step" data-i="2"><div class="num">3</div><div class="txt"><b>Mưa</b><span>Các hạt nước trong mây lớn dần rồi rơi xuống thành mưa.</span></div></div><div class="step" data-i="3"><div class="num">4</div><div class="txt"><b>Dòng chảy</b><span>Nước mưa chảy theo sông suối, thấm xuống đất.</span></div></div><div class="step" data-i="4"><div class="num">5</div><div class="txt"><b>Trở lại</b><span>Nước lại về ao hồ, biển; vòng tuần hoàn khép kín.</span></div></div></div></div>
-</div><script>var st=document.querySelectorAll('.step'),i=0;function hl(){st.forEach(function(e){e.classList.remove('on')});st[i].classList.add('on');i=(i+1)%st.length}hl();setInterval(hl,1400);</script></body></html>
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var st=document.querySelectorAll('.step'),i=0;function hl(){st.forEach(function(e){e.classList.remove('on')});st[i].classList.add('on');i=(i+1)%st.length}hl();loop(hl,1400);</script></body></html>

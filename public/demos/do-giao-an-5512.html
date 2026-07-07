@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#6938EF}
 .dv{max-width:640px;margin:0 auto}
 .tb{display:flex;align-items:center;gap:8px;background:#344054;color:#fff;padding:8px 12px;border-radius:10px 10px 0 0;font-size:13px}
@@ -31,4 +32,10 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <div class="paper"><div class="sheet" id="sheet"><h2>Giáo án theo Công văn 5512</h2><div class="sub">Trường học số · Tài liệu tham khảo</div>
 <table><tr><th>Thông tin</th><th>Nội dung</th></tr><tr><td>Môn</td><td>—</td></tr><tr><td>Thời lượng</td><td>1 tiết</td></tr></table>
 <h3>I. Mục tiêu</h3><p>Kiến thức, năng lực và phẩm chất cần đạt sau bài học.</p><h3>II. Thiết bị & học liệu</h3><p>Máy chiếu, phiếu học tập, dụng cụ minh họa.</p><h3>III. Tiến trình — Khởi động</h3><p>Trò chơi ngắn kết nối kiến thức cũ với bài mới.</p><h3>Hình thành kiến thức</h3><p>Chuyển giao nhiệm vụ → thực hiện → báo cáo → kết luận.</p></div></div></div></div>
-</div><script>var sh=document.getElementById('sheet'),up=true;setInterval(function(){up=!up;sh.style.transform=up?'translateY(0)':'translateY(-45%)'},3000);</script></body></html>
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var sh=document.getElementById('sheet'),up=true;loop(function(){up=!up;sh.style.transform=up?'translateY(0)':'translateY(-45%)'},3000);</script></body></html>

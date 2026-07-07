@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#9F1AB1}
 .wrap{max-width:480px;margin:0 auto}.bins{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .bin{border:2px dashed var(--bd);border-radius:12px;padding:12px;text-align:center;min-height:80px}
@@ -23,6 +24,12 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <div class="body"><div class="wrap"><span class="badge" style="background:#FDF4FF;color:#9F1AB1;display:block;width:fit-content;margin:0 auto 12px">Kéo thả phân loại từ · Ngữ văn 6</span>
 <div class="bins"><div class="bin"><b>Danh từ</b><div id="b0"></div></div><div class="bin"><b>Động từ</b><div id="b1"></div></div><div class="bin"><b>Tính từ</b><div id="b2"></div></div></div>
 <div class="tray" id="tray"></div></div></div>
-</div><script>var W=[['học sinh',0],['chạy',1],['đẹp',2],['bàn ghế',0],['viết',1],['cao',2]],i=0;
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var W=[['học sinh',0],['chạy',1],['đẹp',2],['bàn ghế',0],['viết',1],['cao',2]],i=0;
 var tray=document.getElementById('tray');W.forEach(function(w,k){var t=document.createElement('span');t.className='tok';t.id='t'+k;t.textContent=w[0];tray.appendChild(t)});
-setInterval(function(){if(i<W.length){var t=document.getElementById('t'+i),b=document.getElementById('b'+W[i][1]);b.appendChild(t);i++}else{i=0;W.forEach(function(w,k){tray.appendChild(document.getElementById('t'+k))})}},1100);</script></body></html>
+loop(function(){if(i<W.length){var t=document.getElementById('t'+i),b=document.getElementById('b'+W[i][1]);b.appendChild(t);i++}else{i=0;W.forEach(function(w,k){tray.appendChild(document.getElementById('t'+k))})}},1100);</script></body></html>

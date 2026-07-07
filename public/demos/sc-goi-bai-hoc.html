@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#055BE6}
 .sc{max-width:600px;margin:0 auto}
 .pbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
@@ -27,11 +28,17 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <div class="body"><div class="sc">
 <div class="pbar"><span class="pchip" id="pc">Điểm: 0/10</span><div class="pt"><i id="pf"></i></div></div>
 <div class="stage" id="stage"></div></div></div>
-</div><script>var accent='#055BE6';
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var accent='#055BE6';
 var screens=[
 {h:'Mục tiêu bài học',p:'Sau bài này, học sinh nắm được khái niệm và vận dụng vào ví dụ cơ bản.'},
 {h:'Lý thuyết',p:'Trình bày nội dung chính kèm hình minh họa và ví dụ từng bước.'},
 {h:'Ví dụ mẫu',p:'Áp dụng lý thuyết vào một bài toán cụ thể, giải chi tiết.'},
 {h:'Câu hỏi kiểm tra',p:"(a+b)² bằng?",quiz:true,o:["a²+b²","a²+2ab+b²","a²−2ab+b²"],a:1}];
 var i=0;function show(){var s=screens[i],st=document.getElementById('stage');var html='<h3>'+s.h+'</h3><p>'+s.p+'</p>';if(s.quiz){html+='<div class="opts">'+s.o.map(function(o,k){return '<div class="opt" data-k="'+k+'">'+o+'</div>'}).join('')+'</div>'}st.innerHTML=html;document.getElementById('pf').style.width=((i+1)/screens.length*100)+'%';if(s.quiz){setTimeout(function(){var b=st.querySelectorAll('.opt')[s.a];if(b)b.classList.add('correct');document.getElementById('pc').textContent='Điểm: 10/10'},900)}}
-show();setInterval(function(){i=(i+1)%screens.length;if(i===0)document.getElementById('pc').textContent='Điểm: 0/10';show()},2500);</script></body></html>
+show();loop(function(){i=(i+1)%screens.length;if(i===0)document.getElementById('pc').textContent='Điểm: 0/10';show()},2500);</script></body></html>

@@ -13,6 +13,7 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
 .body{flex:1;padding:18px;overflow:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html:not(.playing) *{animation-play-state:paused!important}
 :root{--accent:#0061AF}
 .wrap{max-width:460px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .sit{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px;box-shadow:var(--sh)}
@@ -21,6 +22,12 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 <body><div class="app">
 <div class="bar"><span class="dot"></span><span class="t">Tình huống nhập vai ra quyết định</span><span class="s"></span><span class="tag">Trường học số</span></div>
 <div class="body"><div class="wrap"><span class="badge">Nhập vai · GDCD 9</span><div class="sit" id="s"></div></div></div>
-</div><script>var S=[{h:'Em thấy bạn chép bài trong giờ kiểm tra. Em sẽ?',o:['Lờ đi như không thấy','Nhắc bạn dừng lại sau giờ','Báo ngay cho giáo viên']},{h:'Nhặt được ví có tiền trước cổng trường. Em sẽ?',o:['Giữ lại cho mình','Nộp cho bảo vệ/nhà trường','Chia cho các bạn']}],i=0;
+</div><script>var PLAY=false,_si=window.setInterval;
+function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
+function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
+function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
+window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
+var S=[{h:'Em thấy bạn chép bài trong giờ kiểm tra. Em sẽ?',o:['Lờ đi như không thấy','Nhắc bạn dừng lại sau giờ','Báo ngay cho giáo viên']},{h:'Nhặt được ví có tiền trước cổng trường. Em sẽ?',o:['Giữ lại cho mình','Nộp cho bảo vệ/nhà trường','Chia cho các bạn']}],i=0;
 function show(){var s=S[i];document.getElementById('s').innerHTML='<h3>Tình huống '+(i+1)+'</h3><p style="color:var(--ink2);font-size:14px">'+s.h+'</p>'+s.o.map(function(o,k){return '<button class="opt" data-k="'+k+'">'+o+'</button>'}).join('');document.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){document.querySelectorAll('.opt').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel')}})}
-show();var auto=0;setInterval(function(){var b=document.querySelectorAll('.opt');if(auto<b.length){b.forEach(function(x){x.classList.remove('sel')});b[auto].classList.add('sel');auto++}else{auto=0;i=(i+1)%S.length;show()}},1400);</script></body></html>
+show();var auto=0;loop(function(){var b=document.querySelectorAll('.opt');if(auto<b.length){b.forEach(function(x){x.classList.remove('sel')});b[auto].classList.add('sel');auto++}else{auto=0;i=(i+1)%S.length;show()}},1400);</script></body></html>

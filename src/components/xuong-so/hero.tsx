@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Search } from "lucide-react";
 
@@ -37,7 +38,12 @@ const fade = (delay: number) => ({
   transition: { duration: 0.8, delay, ease: EASE },
 });
 
+const HERO_VIDEO_URL =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
+
 export function Hero({ filter, onFilterChange, scrollToContent }: HeroProps) {
+  const [videoFailed, setVideoFailed] = useState(false);
+
   function applyChip(patch: Partial<ContentFilter>) {
     onFilterChange({
       ...filter,
@@ -53,7 +59,22 @@ export function Hero({ filter, onFilterChange, scrollToContent }: HeroProps) {
   return (
     <section className="relative overflow-hidden bg-white">
       <MeshBg />
-      <div className="relative mx-auto max-w-5xl px-4 pt-8 pb-14 text-center sm:px-6 sm:pt-12 sm:pb-20">
+      {/* Video nền + lớp phủ sáng để hợp tông MobiFone và đọc rõ chữ */}
+      {!videoFailed && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          onError={() => setVideoFailed(true)}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-45"
+          src={HERO_VIDEO_URL}
+        />
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/60 via-white/78 to-[#FAFAFA]" />
+      {/* Tô nhẹ sắc xanh thương hiệu lên nền video */}
+      <div className="pointer-events-none absolute inset-0 bg-[#0061AF] mix-blend-overlay opacity-[0.06]" />
+      <div className="relative mx-auto max-w-5xl px-4 pt-8 pb-16 text-center sm:px-6 sm:pt-12 sm:pb-24">
         {/* Logo lockup */}
         <motion.div {...fade(0)} className="mb-8 flex items-center justify-center gap-2.5">
           <img src="/brand/logomark.svg" alt="" className="h-8 w-8" width={32} height={32} />
