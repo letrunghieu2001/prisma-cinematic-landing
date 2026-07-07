@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Play } from "lucide-react";
 
@@ -29,7 +29,6 @@ export function ContentCard({ item, previewId, onRequestPreview, onOpen }: Conte
   const Icon = info.icon;
   const reduced = useReducedMotion();
   const timerRef = useRef<number | null>(null);
-  const [armed, setArmed] = useState(false);
 
   const isPreviewing = previewId === item.id && !reduced;
 
@@ -40,27 +39,24 @@ export function ContentCard({ item, previewId, onRequestPreview, onOpen }: Conte
   }, []);
 
   function handleEnter() {
-    setArmed(true);
     if (reduced) return;
     timerRef.current = window.setTimeout(() => onRequestPreview(item.id), HOVER_DELAY_MS);
   }
   function handleLeave() {
-    setArmed(false);
     if (timerRef.current) window.clearTimeout(timerRef.current);
     if (previewId === item.id) onRequestPreview(null);
   }
 
   return (
     <motion.article
-      layout
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
+      exit={{ opacity: 0 }}
+      whileHover={reduced ? undefined : { y: -3 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       className="group mb-4 break-inside-avoid overflow-hidden rounded-xl border border-[#E9EAEB] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.06)] transition-shadow duration-200 hover:shadow-[0_12px_32px_rgba(16,24,40,0.12)]"
-      style={{ transform: armed && !reduced ? "translateY(-3px)" : undefined }}
     >
       {/* Poster + hover preview */}
       <button

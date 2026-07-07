@@ -33,7 +33,7 @@ export function ContentMasonry({ items, onOpen, onClearFilter }: ContentMasonryP
 
   return (
     <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence>
         {items.map((item) => (
           <ContentCard
             key={item.id}
