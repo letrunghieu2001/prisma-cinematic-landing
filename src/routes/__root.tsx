@@ -93,6 +93,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Xưởng Số — Xưởng tạo bài học & học liệu số bằng AI" },
+      { name: "description", content: "Chọn template theo tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học và học liệu số của riêng bạn." },
+      { property: "og:description", content: "Chọn template theo tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học và học liệu số của riêng bạn." },
+      { name: "twitter:description", content: "Chọn template theo tiến trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học và học liệu số của riêng bạn." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7075ae2f-7655-4a28-b187-b849b245ef3b/id-preview-f2b0314c--653b7c4c-37e4-4829-9bd8-4e06fe350df9.lovable.app-1783407193942.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7075ae2f-7655-4a28-b187-b849b245ef3b/id-preview-f2b0314c--653b7c4c-37e4-4829-9bd8-4e06fe350df9.lovable.app-1783407193942.png" },
     ],
     links: [
       {
