@@ -1,19 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { Play } from "lucide-react";
 
 import { CopyButton } from "./copy-button";
+import { PosterThumbnail } from "./poster-thumbnail";
 import { BRAND, FORMAT_INFO } from "@/data/taxonomy";
 import { formatOf, type CardSize, type PromptItem } from "@/data/types";
 
 interface ContentCardProps {
   item: PromptItem;
   onOpen: (item: PromptItem) => void;
+  /** Thiết bị có hover (desktop) hay không (touch) */
+  hoverCapable: boolean;
+  /** Card này đang là card được cuộn tới (dùng cho touch, 1 lần 1 content) */
+  autoActive: boolean;
+  /** Báo tỉ lệ hiển thị lên masonry để chọn card auto-play trên touch */
+  onVisible: (id: string, ratio: number) => void;
 }
 
 const HOVER_DELAY_MS = 140;
 
-/** Chiều cao vùng thumbnail theo size — tạo nhịp lộn xộn kiểu Pinterest */
+/** Chiều cao thumbnail theo size — tạo nhịp lộn xộn kiểu Pinterest */
 const POSTER_HEIGHT: Record<CardSize, string> = {
   sm: "h-40",
   md: "h-52",
@@ -21,9 +27,14 @@ const POSTER_HEIGHT: Record<CardSize, string> = {
   xl: "h-80",
 };
 
-export function ContentCard({ item, onOpen }: ContentCardProps) {
+export function ContentCard({
+  item,
+  onOpen,
+  hoverCapable,
+  autoActive,
+  onVisible,
+}: ContentCardProps) {
   const info = FORMAT_INFO[formatOf(item)];
-  const Icon = info.icon;
   const reduced = useReducedMotion();
 
   const cardRef = useRef<HTMLElement>(null);
@@ -32,12 +43,30 @@ export function ContentCard({ item, onOpen }: ContentCardProps) {
   const inView = useInView(cardRef, { once: true, margin: "300px" });
 
   const [loaded, setLoaded] = useState(false);
-  const [playing, setPlaying] = useState(false);
+  const [hovering, setHovering] = useState(false);
 
+  const active = !reduced && (hoverCapable ? hovering : autoActive);
+
+  // Gửi play/pause tới iframe
   useEffect(() => {
-    if (!loaded || reduced) return;
-    iframeRef.current?.contentWindow?.postMessage(playing ? "play" : "pause", "*");
-  }, [playing, loaded, reduced]);
+    if (!loaded) return;
+    iframeRef.current?.contentWindow?.postMessage(active ? "play" : "pause", "*");
+  }, [active, loaded]);
+
+  // Trên touch: theo dõi mức hiển thị để masonry chọn card đang xem
+  useEffect(() => {
+    if (hoverCapable || reduced) return;
+    const el = cardRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => onVisible(item.id, entry.intersectionRatio), {
+      threshold: [0, 0.3, 0.6, 0.9],
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      onVisible(item.id, 0);
+    };
+  }, [hoverCapable, reduced, item.id, onVisible]);
 
   useEffect(() => {
     return () => {
@@ -46,12 +75,12 @@ export function ContentCard({ item, onOpen }: ContentCardProps) {
   }, []);
 
   function handleEnter() {
-    if (reduced) return;
-    timerRef.current = window.setTimeout(() => setPlaying(true), HOVER_DELAY_MS);
+    if (!hoverCapable || reduced) return;
+    timerRef.current = window.setTimeout(() => setHovering(true), HOVER_DELAY_MS);
   }
   function handleLeave() {
     if (timerRef.current) window.clearTimeout(timerRef.current);
-    setPlaying(false);
+    setHovering(false);
   }
 
   return (
@@ -66,28 +95,15 @@ export function ContentCard({ item, onOpen }: ContentCardProps) {
       onMouseLeave={handleLeave}
       className="group mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-[#E9EAEB] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(16,24,40,0.14)]"
     >
-      {/* Thumbnail sạch: iframe demo (ẩn chrome), đứng yên tới khi hover */}
+      {/* Thumbnail: poster tĩnh, hover/cuộn tới mới chạy demo */}
       <button
         type="button"
         onClick={() => onOpen(item)}
         aria-label={`Xem chi tiết ${item.title}`}
-        className={`relative block w-full cursor-pointer overflow-hidden border-b border-[#F2F4F7] ${POSTER_HEIGHT[item.size]}`}
+        className={`relative block w-full cursor-pointer overflow-hidden ${POSTER_HEIGHT[item.size]}`}
         style={{ background: info.bg }}
       >
-        {/* Placeholder trong lúc iframe tải */}
-        <span
-          className={`pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-            loaded ? "opacity-0" : "opacity-100"
-          }`}
-        >
-          <span
-            className="flex h-11 w-11 items-center justify-center rounded-xl bg-white"
-            style={{ boxShadow: "0 4px 12px rgba(16,24,40,0.08)" }}
-          >
-            <Icon className="h-5 w-5" style={{ color: info.color }} />
-          </span>
-        </span>
-
+        {/* Demo động (nền dưới) — mount khi tới gần viewport */}
         {inView && (
           <iframe
             ref={iframeRef}
@@ -102,12 +118,13 @@ export function ContentCard({ item, onOpen }: ContentCardProps) {
           />
         )}
 
-        {/* Gợi ý "chạy thử" — chỉ hiện khi hover, nằm gọn góc dưới trên lớp gradient mỏng */}
-        <span className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-end bg-gradient-to-t from-black/25 to-transparent p-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-          <span className="flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[#181D27] shadow-sm">
-            <Play className="h-3 w-3" style={{ color: info.color }} /> Đang chạy thử
-          </span>
-        </span>
+        {/* Poster tĩnh (đè trên) — mờ đi khi active để lộ demo */}
+        <div
+          className="absolute inset-0 transition-opacity duration-300"
+          style={{ opacity: active ? 0 : 1, pointerEvents: "none" }}
+        >
+          <PosterThumbnail item={item} hovering={hovering} />
+        </div>
       </button>
 
       {/* Thân card */}
