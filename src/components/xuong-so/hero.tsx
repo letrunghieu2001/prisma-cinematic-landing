@@ -67,13 +67,13 @@ export function Hero({ filter, onFilterChange, scrollToContent }: HeroProps) {
           muted
           playsInline
           onError={() => setVideoFailed(true)}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-45"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-70"
           src={HERO_VIDEO_URL}
         />
       )}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/60 via-white/78 to-[#FAFAFA]" />
-      {/* Tô nhẹ sắc xanh thương hiệu lên nền video */}
-      <div className="pointer-events-none absolute inset-0 bg-[#0061AF] mix-blend-overlay opacity-[0.06]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/40 via-white/62 to-[#FAFAFA]" />
+      {/* Tô sắc xanh thương hiệu lên nền video */}
+      <div className="pointer-events-none absolute inset-0 bg-[#0061AF] mix-blend-overlay opacity-[0.1]" />
       <div className="relative mx-auto max-w-5xl px-4 pt-8 pb-16 text-center sm:px-6 sm:pt-12 sm:pb-24">
         {/* Logo lockup */}
         <motion.div {...fade(0)} className="mb-8 flex items-center justify-center gap-2.5">
