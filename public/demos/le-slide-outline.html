@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bài giảng: Tác phẩm văn học — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#067647}
+.lc{max-width:640px;margin:0 auto}
+.slide{aspect-ratio:16/9;border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);background:var(--sf);padding:26px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.slide .kicker{color:#067647;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+.slide h2{font-size:clamp(18px,4vw,26px);margin:8px 0}
+.slide ul{margin-left:18px;color:var(--ink2);font-size:14px}.slide li{margin:4px 0}
+.slide .no{position:absolute;top:14px;right:18px;color:var(--ink3);font-size:13px;font-weight:600}
+.rail{display:flex;gap:8px;margin-top:12px;justify-content:center}
+.th{width:44px;height:26px;border-radius:5px;background:var(--bd);cursor:pointer}.th.on{background:#067647}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Bài giảng: Tác phẩm văn học</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="lc"><div class="slide" id="sl"></div><div class="rail" id="rail"></div></div></div>
+</div><script>var S=[{"k":"Mở đầu","h":"Giới thiệu tác giả & tác phẩm","b":["Hoàn cảnh sáng tác","Vị trí trong chương trình"]},{"k":"Nội dung","h":"Tóm tắt & bố cục","b":["Các phần chính","Mạch cảm xúc"]},{"k":"Phân tích","h":"Nhân vật & nghệ thuật","b":["Đặc điểm nhân vật","Biện pháp nghệ thuật nổi bật"]},{"k":"Tổng kết","h":"Thông điệp & giá trị","b":["Ý nghĩa nội dung","Giá trị nghệ thuật"]},{"k":"Luyện tập","h":"Câu hỏi củng cố","b":["3 câu hỏi ngắn","1 câu vận dụng"]}],i=0;
+var rail=document.getElementById('rail');S.forEach(function(_,k){var d=document.createElement('div');d.className='th';rail.appendChild(d)});
+function show(){var s=S[i];document.getElementById('sl').innerHTML='<span class="no">'+(i+1)+'/'+S.length+'</span><div class="kicker">'+s.k+'</div><h2>'+s.h+'</h2><ul>'+s.b.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';document.querySelectorAll('.th').forEach(function(t,k){t.classList.toggle('on',k===i)})}
+show();setInterval(function(){i=(i+1)%S.length;show()},2600);</script></body></html>

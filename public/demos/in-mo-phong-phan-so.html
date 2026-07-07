@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mô phỏng chia phần bánh — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#9F1AB1}
+.wrap{max-width:420px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+.pie{width:200px;height:200px;border-radius:50%;position:relative;background:conic-gradient(#9F1AB1 0 0)}
+.frac{font-size:26px;font-weight:800;color:#9F1AB1}
+.ctrls{display:flex;gap:8px}.ch{padding:8px 14px;border:1px solid var(--bd);border-radius:999px;background:#fff;cursor:pointer}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Mô phỏng chia phần bánh</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="wrap"><span class="badge" style="background:#FDF4FF;color:#9F1AB1">Mô phỏng phân số · Tiểu học</span><div class="pie" id="pie"></div><div class="frac" id="f">0/4</div><div class="ctrls" id="c"></div></div></div>
+</div><script>var parts=4,fill=0;var pie=document.getElementById('pie');
+function draw(){var deg=fill/parts*360;pie.style.background='conic-gradient(#9F1AB1 0 '+deg+'deg,#f3e8ff '+deg+'deg 360deg)';document.getElementById('f').textContent=fill+'/'+parts}
+function build(){var c=document.getElementById('c');c.innerHTML='';[2,3,4,6,8].forEach(function(n){var b=document.createElement('button');b.className='ch';b.textContent=n+' phần';b.onclick=function(){parts=n;fill=Math.min(fill,n);draw()};c.appendChild(b)})}
+build();draw();var d=1;setInterval(function(){fill+=d;if(fill>=parts||fill<=0)d=-d;fill=Math.max(0,Math.min(parts,fill));draw()},900);</script></body></html>

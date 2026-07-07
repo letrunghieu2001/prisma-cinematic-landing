@@ -2,7 +2,10 @@ import { readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import { PROMPTS } from "./prompts";
-import { GRADES, MATERIAL_TYPE_INFO, STAGE_INFO, SUBJECTS, TOOL_INFO } from "./taxonomy";
+import { FORMAT_INFO, GRADES, STAGE_INFO, SUBJECTS, TOOL_INFO } from "./taxonomy";
+import { formatOf } from "./types";
+
+const SIZES = ["sm", "md", "lg", "xl"];
 
 describe("PROMPTS data integrity", () => {
   it("có đúng 30 item, slug/id duy nhất", () => {
@@ -11,14 +14,10 @@ describe("PROMPTS data integrity", () => {
     expect(new Set(PROMPTS.map((p) => p.slug)).size).toBe(30);
   });
 
-  it("material có materialType hợp lệ; lesson-website có stage", () => {
+  it("định dạng hợp lệ (bài học hoặc 1 trong 9 loại học liệu)", () => {
     for (const p of PROMPTS) {
-      if (p.kind === "material") {
-        expect(Object.keys(MATERIAL_TYPE_INFO)).toContain(p.materialType);
-      }
-      if (p.kind === "lesson-website") {
-        expect(Object.keys(STAGE_INFO)).toContain(p.stage);
-      }
+      expect(Object.keys(FORMAT_INFO)).toContain(formatOf(p));
+      if (p.kind === "lesson-website") expect(Object.keys(STAGE_INFO)).toContain(p.stage);
     }
   });
 
@@ -27,16 +26,21 @@ describe("PROMPTS data integrity", () => {
       expect(SUBJECTS).toContain(p.subject);
       expect(GRADES).toContain(p.grade);
       expect(p.tools.length).toBeGreaterThan(0);
-      for (const t of p.tools) {
-        expect(Object.keys(TOOL_INFO)).toContain(t);
-      }
+      for (const t of p.tools) expect(Object.keys(TOOL_INFO)).toContain(t);
+    }
+  });
+
+  it("mọi item có size hợp lệ và demoUrl theo id", () => {
+    for (const p of PROMPTS) {
+      expect(SIZES).toContain(p.size);
+      expect(p.demoUrl).toBe(`/demos/${p.id}.html`);
     }
   });
 
   it("mọi demoUrl trỏ tới file tồn tại trong public/demos", () => {
     const files = readdirSync("public/demos");
-    for (const p of PROMPTS.filter((p) => p.demoUrl)) {
-      expect(files).toContain(p.demoUrl!.replace("/demos/", ""));
+    for (const p of PROMPTS) {
+      expect(files, `thiếu demo cho ${p.id}`).toContain(`${p.id}.html`);
     }
   });
 
@@ -45,7 +49,6 @@ describe("PROMPTS data integrity", () => {
       expect(p.prompt.length, `prompt quá ngắn: ${p.id}`).toBeGreaterThanOrEqual(400);
       expect(p.prompt.toLowerCase()).not.toContain("lorem");
     }
-    const free = PROMPTS.filter((p) => p.access === "free").length;
-    expect(free).toBe(21);
+    expect(PROMPTS.filter((p) => p.access === "free")).toHaveLength(21);
   });
 });

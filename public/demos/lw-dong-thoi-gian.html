@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dòng thời gian 1945–1975 — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#0061AF}
+.tl{display:flex;gap:0;overflow-x:auto;padding:8px 4px}
+.node{flex:none;width:120px;text-align:center;cursor:pointer;position:relative}
+.node::before{content:'';position:absolute;top:12px;left:0;right:0;height:3px;background:var(--bd)}
+.dot{width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #0061AF;margin:4px auto;position:relative;z-index:1;transition:.2s}
+.node.on .dot{background:#0061AF;transform:scale(1.25)}
+.yr{font-weight:800;color:#0061AF;font-size:13px}.lb{font-size:11px;color:var(--ink3)}
+.detail{margin-top:14px;background:var(--sf);border:1px solid var(--bd);border-left:4px solid #0061AF;border-radius:12px;padding:16px}
+.detail .y{color:#0061AF;font-weight:800;font-size:18px}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Dòng thời gian 1945–1975</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="tl" id="tl"></div><div class="detail" id="d"></div></div>
+</div><script>var E=[{y:'2/9/1945',t:'Tuyên ngôn Độc lập',x:'Bác Hồ đọc Tuyên ngôn, khai sinh nước Việt Nam Dân chủ Cộng hòa.'},{y:'7/5/1954',t:'Điện Biên Phủ',x:'Chiến thắng chấn động, kết thúc kháng chiến chống Pháp.'},{y:'27/1/1973',t:'Hiệp định Paris',x:'Chấm dứt chiến tranh, lập lại hòa bình ở Việt Nam.'},{y:'30/4/1975',t:'Giải phóng miền Nam',x:'Non sông thu về một mối, đất nước thống nhất.'}],i=0;
+var tl=document.getElementById('tl');E.forEach(function(e,k){var n=document.createElement('div');n.className='node';n.innerHTML='<div class="dot"></div><div class="yr">'+e.y+'</div><div class="lb">'+e.t+'</div>';n.onclick=function(){sel(k)};tl.appendChild(n)});
+function sel(k){i=k;var e=E[k];document.getElementById('d').innerHTML='<span class="y">'+e.y+'</span><h3>'+e.t+'</h3><p style="color:var(--ink2);font-size:13px">'+e.x+'</p>';document.querySelectorAll('.node').forEach(function(n,j){n.classList.toggle('on',j===k)})}
+sel(0);setInterval(function(){sel((i+1)%E.length)},2600);</script></body></html>

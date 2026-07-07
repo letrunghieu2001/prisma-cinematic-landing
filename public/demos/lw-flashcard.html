@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flashcard lật thẻ từ vựng — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#0061AF}
+.wrap{max-width:360px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+.card{width:100%;aspect-ratio:3/2;perspective:900px;cursor:pointer}
+.inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.card.flip .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--bd);border-radius:16px;box-shadow:var(--sh);display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--sf);padding:16px}
+.back{transform:rotateY(180deg);background:#0061AF;color:#fff}
+.word{font-size:28px;font-weight:800;color:#0061AF}.ipa{color:var(--ink3)}.mean{font-size:22px;font-weight:700}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Flashcard lật thẻ từ vựng</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="wrap"><span class="badge">Flashcard · Tiếng Anh 7</span><div class="card" id="c"><div class="inner"><div class="face"><div class="word" id="w">apple</div><div class="ipa" id="p">/ˈæpl/</div></div><div class="face back"><div class="mean" id="m">quả táo</div></div></div></div><button class="btn g" id="n">Thẻ tiếp theo ›</button></div></div>
+</div><script>var D=[['apple','/ˈæpl/','quả táo'],['school','/skuːl/','trường học'],['friend','/frend/','bạn bè'],['water','/ˈwɔːtər/','nước']],i=0;var c=document.getElementById('c');
+function show(){document.getElementById('w').textContent=D[i][0];document.getElementById('p').textContent=D[i][1];document.getElementById('m').textContent=D[i][2];c.classList.remove('flip')}
+c.onclick=function(){c.classList.toggle('flip')};
+document.getElementById('n').onclick=function(){i=(i+1)%D.length;show()};
+show();setInterval(function(){c.classList.toggle('flip')},2000);</script></body></html>

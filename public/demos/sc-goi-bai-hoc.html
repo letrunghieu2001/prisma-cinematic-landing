@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gói SCORM · Hằng đẳng thức — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#055BE6}
+.sc{max-width:600px;margin:0 auto}
+.pbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.pt{flex:1;height:8px;border-radius:999px;background:var(--bd);overflow:hidden}.pt>i{display:block;height:100%;background:#055BE6;width:0;transition:width .4s}
+.pchip{font-size:12px;font-weight:700;color:#055BE6;background:#055BE618;padding:4px 10px;border-radius:999px}
+.stage{border:1px solid var(--bd);border-radius:14px;background:var(--sf);padding:22px;min-height:200px;box-shadow:var(--sh)}
+.stage h3{color:#055BE6;margin-bottom:10px}.stage p{color:var(--ink2)}
+.opts{display:grid;gap:8px;margin-top:12px}.opt{padding:12px 14px;border:2px solid var(--bd);border-radius:10px;font-weight:600}
+.opt.correct{border-color:#067647;background:#EDFCF2;color:#067647}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Gói SCORM · Hằng đẳng thức</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="sc">
+<div class="pbar"><span class="pchip" id="pc">Điểm: 0/10</span><div class="pt"><i id="pf"></i></div></div>
+<div class="stage" id="stage"></div></div></div>
+</div><script>var accent='#055BE6';
+var screens=[
+{h:'Mục tiêu bài học',p:'Sau bài này, học sinh nắm được khái niệm và vận dụng vào ví dụ cơ bản.'},
+{h:'Lý thuyết',p:'Trình bày nội dung chính kèm hình minh họa và ví dụ từng bước.'},
+{h:'Ví dụ mẫu',p:'Áp dụng lý thuyết vào một bài toán cụ thể, giải chi tiết.'},
+{h:'Câu hỏi kiểm tra',p:"(a+b)² bằng?",quiz:true,o:["a²+b²","a²+2ab+b²","a²−2ab+b²"],a:1}];
+var i=0;function show(){var s=screens[i],st=document.getElementById('stage');var html='<h3>'+s.h+'</h3><p>'+s.p+'</p>';if(s.quiz){html+='<div class="opts">'+s.o.map(function(o,k){return '<div class="opt" data-k="'+k+'">'+o+'</div>'}).join('')+'</div>'}st.innerHTML=html;document.getElementById('pf').style.width=((i+1)/screens.length*100)+'%';if(s.quiz){setTimeout(function(){var b=st.querySelectorAll('.opt')[s.a];if(b)b.classList.add('correct');document.getElementById('pc').textContent='Điểm: 10/10'},900)}}
+show();setInterval(function(){i=(i+1)%screens.length;if(i===0)document.getElementById('pc').textContent='Điểm: 0/10';show()},2500);</script></body></html>

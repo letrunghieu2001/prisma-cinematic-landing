@@ -1,121 +1,158 @@
-import { useState } from "react";
 import { motion } from "motion/react";
-import { ArrowDown } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 
-import { Marquee } from "@/components/motion/marquee";
-import { WordsPullUp } from "@/components/motion/words-pull-up";
-import { CREAM, CREAM_TW, EASE, MATERIAL_TYPES, MATERIAL_TYPE_INFO } from "@/data/taxonomy";
+import { MeshBg } from "@/components/motion/mesh-bg";
+import { CountUp } from "@/components/motion/count-up";
+import { BRAND, EASE } from "@/data/taxonomy";
+import type { ContentFilter } from "@/lib/filter";
+import type { ContentFormat } from "@/data/types";
 
-const HERO_VIDEO_URL =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
-
-const NAV_ITEMS = [
-  { label: "Bài học", target: "bai-hoc" },
-  { label: "Học liệu", target: "hoc-lieu" },
-  { label: "Quy trình", target: "quy-trinh" },
-  { label: "Bảng giá", target: "bang-gia" },
-];
-
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+interface HeroProps {
+  filter: ContentFilter;
+  onFilterChange: (f: ContentFilter) => void;
+  scrollToContent: () => void;
 }
 
-export function Hero() {
-  const [videoFailed, setVideoFailed] = useState(false);
+interface QuickChip {
+  label: string;
+  patch: Partial<ContentFilter>;
+}
+
+const QUICK_CHIPS: QuickChip[] = [
+  { label: "Khởi động Toán 7", patch: { stage: "khoi-dong", subject: "Toán" } },
+  { label: "Video KHTN", patch: { formats: ["video"], subject: "KHTN" } },
+  { label: "Bộ đề Tiếng Anh", patch: { formats: ["exam"], subject: "Tiếng Anh" } },
+  { label: "Bài học tương tác", patch: { formats: ["lesson-website"] } },
+];
+
+const STATS: { value: number; suffix: string; label: string }[] = [
+  { value: 30, suffix: "+", label: "mẫu dùng ngay" },
+  { value: 10, suffix: "", label: "định dạng nội dung" },
+  { value: 6, suffix: "", label: "môn học" },
+];
+
+const fade = (delay: number) => ({
+  initial: { y: 18, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: { duration: 0.8, delay, ease: EASE },
+});
+
+export function Hero({ filter, onFilterChange, scrollToContent }: HeroProps) {
+  function applyChip(patch: Partial<ContentFilter>) {
+    onFilterChange({
+      ...filter,
+      formats: patch.formats ?? [],
+      stage: null,
+      subject: null,
+      grade: null,
+      ...patch,
+    } as ContentFilter);
+    scrollToContent();
+  }
 
   return (
-    <section className="h-screen w-full bg-black p-4 md:p-6">
-      <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-b from-[#101010] to-black md:rounded-[2rem]">
-        {!videoFailed && (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover"
-            src={HERO_VIDEO_URL}
-            onError={() => setVideoFailed(true)}
+    <section className="relative overflow-hidden bg-white">
+      <MeshBg />
+      <div className="relative mx-auto max-w-5xl px-4 pt-8 pb-14 text-center sm:px-6 sm:pt-12 sm:pb-20">
+        {/* Logo lockup */}
+        <motion.div {...fade(0)} className="mb-8 flex items-center justify-center gap-2.5">
+          <img src="/brand/logomark.svg" alt="" className="h-8 w-8" width={32} height={32} />
+          <span className="text-lg font-bold text-[#181D27]">Xưởng Số</span>
+          <span className="hidden text-sm text-[#717680] sm:inline">· thuộc Trường học số</span>
+        </motion.div>
+
+        <motion.p
+          {...fade(0.1)}
+          className="mb-4 inline-block rounded-full bg-[#F0F6FE] px-3 py-1 text-sm font-medium"
+          style={{ color: BRAND.primary }}
+        >
+          Kho prompt tạo học liệu & bài học cho giáo viên
+        </motion.p>
+
+        <motion.h1
+          {...fade(0.18)}
+          className="mx-auto max-w-3xl text-4xl leading-tight font-extrabold tracking-tight text-[#181D27] sm:text-5xl md:text-6xl"
+        >
+          Học liệu &amp; bài học số,
+          <br />
+          <span style={{ color: BRAND.primary }}>tạo bằng AI</span> trong vài phút
+        </motion.h1>
+
+        <motion.p
+          {...fade(0.28)}
+          className="mx-auto mt-5 max-w-2xl text-base text-[#535862] sm:text-lg"
+        >
+          Chọn một mẫu, copy prompt, dán vào công cụ AI quen thuộc là có ngay học liệu hoặc bài học
+          cho lớp mình. Mọi thứ sắp theo môn, khối và tiến trình bài dạy.
+        </motion.p>
+
+        {/* Ô tìm kiếm lớn */}
+        <motion.form
+          {...fade(0.38)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            scrollToContent();
+          }}
+          className="mx-auto mt-8 flex max-w-xl items-center gap-2 rounded-full border border-[#E9EAEB] bg-white p-1.5 shadow-[0_4px_16px_rgba(16,24,40,0.08)] focus-within:border-[#0061AF]"
+        >
+          <Search className="ml-3 h-5 w-5 flex-none text-[#717680]" />
+          <input
+            type="search"
+            value={filter.q}
+            onChange={(e) => onFilterChange({ ...filter, q: e.target.value })}
+            placeholder="Tìm bài học, học liệu theo môn, chủ đề…"
+            aria-label="Tìm nội dung"
+            className="min-w-0 flex-1 bg-transparent py-2 text-[15px] text-[#181D27] placeholder:text-[#98A2B3] focus:outline-none"
           />
-        )}
-        <div className="noise-overlay pointer-events-none absolute inset-0 opacity-[0.7] mix-blend-overlay" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
+          <button
+            type="submit"
+            className="flex flex-none items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-colors"
+            style={{ backgroundColor: BRAND.primary }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = BRAND.primaryHover)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = BRAND.primary)}
+          >
+            Khám phá <ArrowRight className="h-4 w-4" />
+          </button>
+        </motion.form>
 
-        {/* Navbar pill */}
-        <nav className="absolute top-0 left-1/2 z-20 -translate-x-1/2 rounded-b-2xl bg-black px-5 py-2 md:rounded-b-3xl md:px-8 md:py-3">
-          <ul className="flex items-center gap-4 sm:gap-6 md:gap-10">
-            <li className="font-semibold text-sm md:text-base" style={{ color: CREAM }}>
-              Xưởng Số
-            </li>
-            {NAV_ITEMS.map((item, i) => (
-              <li key={item.target} className={i < NAV_ITEMS.length - 1 ? "hidden sm:block" : ""}>
-                <button
-                  type="button"
-                  onClick={() => scrollToSection(item.target)}
-                  className="cursor-pointer text-xs transition-colors hover:text-[#E1E0CC] md:text-sm"
-                  style={{ color: "rgba(225, 224, 204, 0.8)" }}
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {/* Chip gợi ý */}
+        <motion.div
+          {...fade(0.48)}
+          className="mt-4 flex flex-wrap items-center justify-center gap-2"
+        >
+          <span className="text-sm text-[#717680]">Gợi ý:</span>
+          {QUICK_CHIPS.map((chip) => (
+            <button
+              key={chip.label}
+              type="button"
+              onClick={() => applyChip(chip.patch)}
+              className="rounded-full border border-[#E9EAEB] bg-white px-3 py-1.5 text-[13px] font-medium text-[#344054] transition-colors hover:border-[#0061AF] hover:text-[#0061AF]"
+            >
+              {chip.label}
+            </button>
+          ))}
+        </motion.div>
 
-        {/* Bottom content grid */}
-        <div className="absolute right-0 bottom-14 left-0 z-10 px-4 sm:px-6 md:bottom-16 md:px-10">
-          <div className="grid grid-cols-12 items-end gap-4">
-            <div className="col-span-12 lg:col-span-8">
-              <h1
-                className="text-[17vw] leading-[0.9] font-medium tracking-[-0.06em] md:text-[15vw]"
-                style={{ color: CREAM }}
-              >
-                <WordsPullUp text="Xưởng Số" showAsterisk />
-              </h1>
+        {/* Số liệu */}
+        <motion.div
+          {...fade(0.58)}
+          className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
+        >
+          {STATS.map((s) => (
+            <div key={s.label} className="text-center">
+              <div className="text-3xl font-extrabold" style={{ color: BRAND.primary }}>
+                <CountUp to={s.value} suffix={s.suffix} />
+              </div>
+              <div className="text-sm text-[#717680]">{s.label}</div>
             </div>
-            <div className="col-span-12 flex flex-col gap-4 pb-2 sm:gap-6 sm:pb-4 lg:col-span-4">
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
-                className="text-xs sm:text-sm md:text-base"
-                style={{ color: "rgba(222, 219, 200, 0.75)", lineHeight: 1.35 }}
-              >
-                Xưởng tạo <em className="font-serif italic">bài học</em> &amp;{" "}
-                <em className="font-serif italic">học liệu</em> số bằng AI. Chọn template theo tiến
-                trình bài dạy, copy prompt, dán vào Lovable · v0 · Claude — có ngay bài học của
-                riêng bạn.
-              </motion.p>
-              <motion.button
-                type="button"
-                onClick={() => scrollToSection("storyboard")}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
-                className="group inline-flex cursor-pointer items-center gap-2 self-start rounded-full py-1 pr-1 pl-5 transition-all hover:gap-3"
-                style={{ backgroundColor: CREAM_TW, color: "#000" }}
-              >
-                <span className="text-sm font-medium sm:text-base">Khám phá xưởng</span>
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-10 sm:w-10">
-                  <ArrowDown className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: CREAM }} />
-                </span>
-              </motion.button>
+          ))}
+          <div className="text-center">
+            <div className="text-3xl font-extrabold" style={{ color: BRAND.primary }}>
+              TH→THPT
             </div>
+            <div className="text-sm text-[#717680]">mọi cấp học</div>
           </div>
-        </div>
-
-        {/* Marquee loại học liệu */}
-        <div className="absolute right-0 bottom-0 left-0 z-10 border-t border-white/10 bg-black/40 py-3 backdrop-blur-sm">
-          <Marquee speed={45}>
-            {MATERIAL_TYPES.map((type) => (
-              <span key={type} className="inline-flex items-center gap-8 text-sm font-medium">
-                <span style={{ color: MATERIAL_TYPE_INFO[type].color }}>
-                  {MATERIAL_TYPE_INFO[type].label}
-                </span>
-                <span style={{ color: "rgba(225, 224, 204, 0.35)" }}>·</span>
-              </span>
-            ))}
-          </Marquee>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

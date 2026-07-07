@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { toast } from "sonner";
 
-import { CREAM_TW } from "@/data/taxonomy";
+import { BRAND } from "@/data/taxonomy";
 
 interface CopyButtonProps {
   text: string;
@@ -66,8 +66,14 @@ export function CopyButton({
       type="button"
       onClick={handleCopy}
       aria-label={copied ? "Đã copy prompt" : label}
-      className={`inline-flex cursor-pointer items-center gap-2 rounded-full font-medium text-black transition-all hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DEDBC8] ${sizeClasses} ${className}`}
-      style={{ backgroundColor: CREAM_TW }}
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-full font-semibold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${sizeClasses} ${className}`}
+      style={{ backgroundColor: copied ? "#067647" : BRAND.primary, outlineColor: BRAND.primary }}
+      onMouseEnter={(e) => {
+        if (!copied) e.currentTarget.style.backgroundColor = BRAND.primaryHover;
+      }}
+      onMouseLeave={(e) => {
+        if (!copied) e.currentTarget.style.backgroundColor = BRAND.primary;
+      }}
     >
       <Icon className={size === "lg" ? "h-5 w-5" : "h-4 w-4"} />
       <span>{copied ? "Đã copy" : label}</span>

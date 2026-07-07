@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mô hình 3D tế bào thực vật — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#F04438}
+.scene{height:380px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#0f1e17,#0a1410);border-radius:16px;position:relative;perspective:800px}
+.cell{width:230px;height:230px;border-radius:46% 54% 52% 48%;background:radial-gradient(circle at 40% 35%,#1b4d3a,#0e3325);border:3px solid #2f7d5b;position:relative;animation:rot 14s linear infinite;transform-style:preserve-3d}
+@keyframes rot{to{transform:rotateY(360deg)}}
+.org{position:absolute;border-radius:50%}
+.n{width:64px;height:64px;background:radial-gradient(circle,#7fc9a3,#3f8f68);top:70px;left:80px}
+.c1{width:26px;height:16px;background:#a7f3d0;top:40px;left:40px;border-radius:50%}
+.c2{width:26px;height:16px;background:#a7f3d0;top:150px;left:130px;border-radius:50%}
+.v{width:50px;height:50px;background:#173f2e;top:130px;left:40px}
+.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#a7f3d0;font-size:12px}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Mô hình 3D tế bào thực vật</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="scene"><div class="cell"><div class="org n"></div><div class="org c1"></div><div class="org c2"></div><div class="org v"></div></div><div class="hint">Tế bào thực vật tự xoay · bấm bào quan để xem chú thích (mô phỏng)</div></div></div>
+</div><script></script></body></html>

@@ -1,0 +1,68 @@
+/*
+ * THS UI System — tokens dùng chung cho MỌI demo trong public/demos/.
+ * Mỗi demo là file HTML tự chứa nên PHẢI inline khối này vào <style>.
+ * Mục tiêu: 30 demo nhìn như cùng một sản phẩm Trường học số (MobiFone).
+ */
+:root {
+  --ths-primary: #0061af;
+  --ths-primary-hover: #0d67f7;
+  --ths-primary-soft: #f0f6fe;
+  --ths-accent: #ed1c24;
+  --ths-ink: #181d27;
+  --ths-ink-soft: #535862;
+  --ths-ink-muted: #717680;
+  --ths-border: #e9eaeb;
+  --ths-surface: #ffffff;
+  --ths-canvas: #fafafa;
+  --ths-radius: 12px;
+  --ths-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --ths-shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
+  --ths-shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.12);
+  --ths-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: var(--ths-font);
+  color: var(--ths-ink);
+  background: var(--ths-canvas);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; color: var(--ths-ink); }
+.ths-app { min-height: 100vh; display: flex; flex-direction: column; }
+.ths-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px; background: var(--ths-surface);
+  border-bottom: 1px solid var(--ths-border);
+}
+.ths-bar .dot { width: 22px; height: 22px; border-radius: 6px; background: var(--ths-primary); flex: none; }
+.ths-bar .title { font-weight: 600; font-size: 15px; }
+.ths-bar .spacer { flex: 1; }
+.ths-card {
+  background: var(--ths-surface);
+  border: 1px solid var(--ths-border);
+  border-radius: var(--ths-radius);
+  box-shadow: var(--ths-shadow-sm);
+}
+.ths-btn {
+  font: inherit; font-weight: 600; cursor: pointer; border: none;
+  border-radius: 999px; padding: 10px 18px; min-height: 44px;
+  background: var(--ths-primary); color: #fff;
+  transition: background .15s, transform .1s;
+}
+.ths-btn:hover { background: var(--ths-primary-hover); }
+.ths-btn:active { transform: scale(0.97); }
+.ths-btn.ghost { background: var(--ths-primary-soft); color: var(--ths-primary); }
+.ths-btn.accent { background: var(--ths-accent); }
+.ths-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  background: var(--ths-primary-soft); color: var(--ths-primary);
+}
+.ths-chip {
+  padding: 6px 12px; border-radius: 999px; border: 1px solid var(--ths-border);
+  background: var(--ths-surface); font-size: 13px; cursor: pointer;
+}
+.ths-progress { height: 8px; border-radius: 999px; background: var(--ths-border); overflow: hidden; }
+.ths-progress > i { display: block; height: 100%; background: var(--ths-primary); transition: width .3s; }
+:focus-visible { outline: 2px solid var(--ths-primary); outline-offset: 2px; }

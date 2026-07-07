@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trang triển lãm dự án nhóm — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#0061AF}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;max-width:640px;margin:0 auto}
+.item{border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:var(--sf);box-shadow:var(--sh);transition:transform .3s}
+.item.on{transform:scale(1.04);border-color:#0061AF}
+.thumb{aspect-ratio:4/3;background:linear-gradient(135deg,#0061AF33,#fff);display:flex;align-items:center;justify-content:center;font-size:30px}
+.cap{padding:10px}.cap b{font-size:13px}.cap span{font-size:11px;color:var(--ink3)}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Trang triển lãm dự án nhóm</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><span class="badge" style="display:block;width:fit-content;margin:0 auto 12px">Triển lãm dự án · Địa lý 8</span><div class="gal"><div class="item"><div class="thumb">🗺️</div><div class="cap"><b>Nhóm 1</b><br><span>Bản đồ vùng kinh tế</span></div></div><div class="item"><div class="thumb">📊</div><div class="cap"><b>Nhóm 2</b><br><span>Biểu đồ dân số</span></div></div><div class="item"><div class="thumb">🏞️</div><div class="cap"><b>Nhóm 3</b><br><span>Cảnh quan tự nhiên</span></div></div><div class="item"><div class="thumb">🏭</div><div class="cap"><b>Nhóm 4</b><br><span>Khu công nghiệp</span></div></div><div class="item"><div class="thumb">🌾</div><div class="cap"><b>Nhóm 5</b><br><span>Vùng nông nghiệp</span></div></div><div class="item"><div class="thumb">🚢</div><div class="cap"><b>Nhóm 6</b><br><span>Giao thông – cảng biển</span></div></div></div></div>
+</div><script>var it=document.querySelectorAll('.item'),i=0;setInterval(function(){it.forEach(function(e){e.classList.remove('on')});it[i].classList.add('on');i=(i+1)%it.length},1500);</script></body></html>

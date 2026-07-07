@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bài học tương tác: Quang hợp — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#0061AF}
+.wrap{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.diagram{flex:1 1 240px;max-width:320px}.panel{flex:1 1 220px;max-width:300px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.panel h3{color:#0061AF}.hot{cursor:pointer;transition:opacity .2s}.hot:hover{opacity:.7}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Bài học tương tác: Quang hợp</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="wrap"><div class="diagram"><svg viewBox="0 0 200 220" style="width:100%">
+<g class="hot" data-k="sun"><circle cx="40" cy="34" r="20" fill="#f5a623"/><text x="40" y="66" text-anchor="middle" font-size="10" fill="#8a6314">Ánh sáng</text></g>
+<g class="hot" data-k="la"><ellipse cx="120" cy="70" rx="46" ry="26" fill="#3fae63"/><text x="120" y="74" text-anchor="middle" font-size="11" fill="#0f3d22" font-weight="700">Lá</text></g>
+<rect x="115" y="94" width="8" height="80" fill="#7a5230"/>
+<g class="hot" data-k="re"><path d="M119 174 q-20 20 -34 40 M119 174 q20 20 34 40" stroke="#7a5230" stroke-width="5" fill="none" stroke-linecap="round"/><text x="119" y="216" text-anchor="middle" font-size="10" fill="#5a3d20">Rễ</text></g></svg></div>
+<div class="panel" id="p"><h3>Khám phá quang hợp</h3><p style="color:var(--ink2);font-size:13px">Bấm vào từng bộ phận để xem vai trò trong quang hợp.</p></div></div></div>
+</div><script>var I={sun:['Ánh sáng Mặt Trời','Cung cấp năng lượng cho quang hợp; lá hấp thụ nhờ diệp lục.'],la:['Lá cây','Nơi quang hợp diễn ra; chứa diệp lục tạo glucose và oxygen.'],re:['Rễ cây','Hút nước và muối khoáng đưa lên lá làm nguyên liệu.']};
+var keys=['sun','la','re'],k=0;var p=document.getElementById('p');
+function pick(key){var d=I[key];p.innerHTML='<h3>'+d[0]+'</h3><p style="color:var(--ink2);font-size:13px">'+d[1]+'</p>'}
+document.querySelectorAll('.hot').forEach(function(el){el.onclick=function(){pick(el.dataset.k)}});
+setInterval(function(){pick(keys[k]);k=(k+1)%keys.length},2200);</script></body></html>

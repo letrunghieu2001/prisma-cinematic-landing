@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mô phỏng thí nghiệm an toàn — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#A15C07}
+.vp{max-width:640px;margin:0 auto}
+.screen{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;box-shadow:var(--sh);background:#000}
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;opacity:0;transition:opacity .8s;color:#fff}
+.scene.on{opacity:1}.scene h3{font-size:clamp(18px,4vw,30px);text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.cap{position:absolute;left:0;right:0;bottom:44px;text-align:center;color:#fff;font-size:14px;padding:0 16px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.pbtn{position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:fade 2.6s ease-in-out infinite}
+@keyframes fade{0%,100%{opacity:0}50%{opacity:.9}}
+.vbar{position:absolute;left:0;right:0;bottom:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.6));display:flex;align-items:center;gap:10px}
+.vtrack{flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,.35)}.vtrack>i{display:block;height:100%;background:#fff;width:0;border-radius:999px}
+.vtime{color:#fff;font-size:12px}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Mô phỏng thí nghiệm an toàn</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="vp"><div class="screen" id="scr"><div class="scene on" style="background:linear-gradient(135deg,#A15C07,#1a1a2e)"><h3>An toàn trước tiên</h3><div class="cap">Cảnh 1 · Đeo kính, găng tay; chỉ quan sát qua mô phỏng.</div></div><div class="scene" style="background:linear-gradient(135deg,#A15C07,#1a1a2e)"><h3>Dụng cụ & hóa chất</h3><div class="cap">Cảnh 2 · Chuẩn bị mẫu và thiết bị theo quy trình.</div></div><div class="scene" style="background:linear-gradient(135deg,#A15C07,#1a1a2e)"><h3>Tiến hành</h3><div class="cap">Cảnh 3 · Quan sát hiện tượng xảy ra từng bước.</div></div><div class="scene" style="background:linear-gradient(135deg,#A15C07,#1a1a2e)"><h3>Giải thích</h3><div class="cap">Cảnh 4 · Bản chất phản ứng và dấu hiệu nhận biết.</div></div><div class="scene" style="background:linear-gradient(135deg,#A15C07,#1a1a2e)"><h3>Củng cố</h3><div class="cap">Cảnh 5 · Vì sao cần làm trong tủ hút?</div></div>
+<div class="pbtn"><svg width="26" height="26" viewBox="0 0 24 24" fill="#A15C07"><path d="M7 5l12 7-12 7z"/></svg></div>
+<div class="vbar"><span class="vtime" id="vt">0:00</span><div class="vtrack"><i id="vf"></i></div><span class="vtime">15s</span></div></div></div></div>
+</div><script>var sc=document.querySelectorAll('.scene'),n=sc.length,i=0,t=0,T=n*3;
+setInterval(function(){t=(t+1)%(T+1);document.getElementById('vf').style.width=(t/T*100)+'%';var m=Math.floor(t/60),s=t%60;document.getElementById('vt').textContent=m+':'+String(s).padStart(2,'0');var ni=Math.min(n-1,Math.floor(t/3));if(ni!==i){sc[i].classList.remove('on');i=ni;sc[i].classList.add('on')}},1000);</script></body></html>

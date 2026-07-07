@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cảnh 3D hệ Mặt Trời — Trường học số</title>
+<style>:root{--p:#0061af;--ph:#0d67f7;--ps:#f0f6fe;--ac:#ed1c24;--ink:#181d27;--ink2:#535862;--ink3:#717680;--bd:#e9eaeb;--sf:#fff;--cv:#fafafa;--r:12px;--sh:0 4px 12px rgba(16,24,40,.08);--f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html,body{font-family:var(--f);color:var(--ink);background:var(--cv);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
+.bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
+.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
+.body{flex:1;padding:18px;overflow:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--accent:#F04438}
+.scene{height:380px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#12203a,#0a0f1e);border-radius:16px;overflow:hidden;position:relative}
+.sun{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle,#ffd27a,#f5a623);box-shadow:0 0 40px #f5a62399;position:absolute}
+.orbit{position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;animation:spin linear infinite}
+.planet{position:absolute;top:50%;left:0;transform:translateY(-50%);border-radius:50%}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#cbd5e1;font-size:12px}</style></head>
+<body><div class="app">
+<div class="bar"><span class="dot"></span><span class="t">Cảnh 3D hệ Mặt Trời</span><span class="s"></span><span class="tag">Trường học số</span></div>
+<div class="body"><div class="scene"><div class="sun"></div><div class="orbit" style="width:120px;height:120px;animation-duration:6s"><div class="planet" style="width:8px;height:8px;background:#c9a06a"></div></div><div class="orbit" style="width:180px;height:180px;animation-duration:10s"><div class="planet" style="width:12px;height:12px;background:#4d94ff"></div></div><div class="orbit" style="width:250px;height:250px;animation-duration:15s"><div class="planet" style="width:10px;height:10px;background:#e07a5f"></div></div><div class="orbit" style="width:320px;height:320px;animation-duration:22s"><div class="planet" style="width:16px;height:16px;background:#f4a259"></div></div><div class="hint">Các hành tinh tự quay quanh Mặt Trời · kéo để xoay (mô phỏng)</div></div></div>
+</div><script></script></body></html>
