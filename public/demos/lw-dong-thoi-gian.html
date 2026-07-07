@@ -7,7 +7,9 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .app{min-height:100%;display:flex;flex-direction:column}
 .bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
 .bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
-.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.bar .t{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.bar .s{flex:1;min-width:8px}.bar .tag{font-size:12px;color:var(--ink3);white-space:nowrap;flex:none}
+html.nochrome .bar{display:none}
+html.nochrome .body{padding:14px}
 .btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
 .btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
@@ -31,6 +33,7 @@ function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
 function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
 function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
 window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('chrome=0')>=0)document.documentElement.classList.add('nochrome');
 if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
 var E=[{y:'2/9/1945',t:'Tuyên ngôn Độc lập',x:'Bác Hồ đọc Tuyên ngôn, khai sinh nước Việt Nam Dân chủ Cộng hòa.'},{y:'7/5/1954',t:'Điện Biên Phủ',x:'Chiến thắng chấn động, kết thúc kháng chiến chống Pháp.'},{y:'27/1/1973',t:'Hiệp định Paris',x:'Chấm dứt chiến tranh, lập lại hòa bình ở Việt Nam.'},{y:'30/4/1975',t:'Giải phóng miền Nam',x:'Non sông thu về một mối, đất nước thống nhất.'}],i=0;
 var tl=document.getElementById('tl');E.forEach(function(e,k){var n=document.createElement('div');n.className='node';n.innerHTML='<div class="dot"></div><div class="yr">'+e.y+'</div><div class="lb">'+e.t+'</div>';n.onclick=function(){sel(k)};tl.appendChild(n)});

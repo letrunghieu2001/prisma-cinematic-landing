@@ -7,7 +7,9 @@ h1,h2,h3,h4{line-height:1.25;font-weight:700}
 .app{min-height:100%;display:flex;flex-direction:column}
 .bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd);flex:none}
 .bar .dot{width:20px;height:20px;border-radius:6px;background:var(--accent,var(--p));flex:none}
-.bar .t{font-weight:600;font-size:14px}.bar .s{flex:1}.bar .tag{font-size:12px;color:var(--ink3)}
+.bar .t{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.bar .s{flex:1;min-width:8px}.bar .tag{font-size:12px;color:var(--ink3);white-space:nowrap;flex:none}
+html.nochrome .bar{display:none}
+html.nochrome .body{padding:14px}
 .btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:9px 16px;min-height:40px;background:var(--p);color:#fff;transition:background .15s,transform .1s}
 .btn:hover{background:var(--ph)}.btn:active{transform:scale(.97)}.btn.g{background:var(--ps);color:var(--p)}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--ps);color:var(--p)}
@@ -27,6 +29,7 @@ function loop(fn,ms){return _si(function(){if(PLAY)fn()},ms)}
 function _play(){if(PLAY)return;PLAY=true;document.documentElement.classList.add('playing');document.dispatchEvent(new Event('ths-play'))}
 function _pause(){PLAY=false;document.documentElement.classList.remove('playing')}
 window.addEventListener('message',function(e){if(e.data==='play')_play();else if(e.data==='pause')_pause()});
+if(location.search.indexOf('chrome=0')>=0)document.documentElement.classList.add('nochrome');
 if(location.search.indexOf('play')>=0){window.addEventListener('load',_play);_play()}
 var Q=["Viết tỉ số của 3 và 5","Tìm x: x/4=6/8","Rút gọn 15/25","2/3 và 4/6 có bằng nhau?","a/b=c/d thì?","Tìm x: x/9=2/3","Tỉ số 8 và 12","Lập tỉ lệ thức từ 4·9=6·6"];
 var C=["#f43f5e","#fb923c","#fbbf24","#4ade80","#22d3ee","#818cf8","#c084fc","#f472b6"],N=Q.length,seg=360/N,w=document.getElementById('w'),rot=0,spin=false;
